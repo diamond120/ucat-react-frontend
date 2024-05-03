@@ -1,0 +1,39 @@
+.home {
+    &__container {
+        max-width: 70rem;
+        margin: 3rem auto;
+        padding: 3rem;
+    }
+
+    &__qb-content, &__pt-content {
+        display: flex;
+        margin-bottom: 3rem;
+
+        > div {
+            padding: 3rem;
+            flex: 50%;
+        }
+    }
+
+    &__qb-comment {
+        background: #38364D;
+        color: #fff;
+        line-height: 1.75rem;
+    }
+
+    &__pt-comment {
+        background: #607D7F;
+        color: #fff;
+        line-height: 1.75rem;
+    }
+
+    &__session-link--container {
+        display: flex;
+        flex-direction: column;
+
+        > a {
+            padding: 0.5rem;
+            color: #53A5AB;
+        }
+    }
+}
