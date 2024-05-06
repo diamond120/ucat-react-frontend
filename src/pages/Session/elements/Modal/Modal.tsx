@@ -2,7 +2,7 @@ import type { ModalProps } from './Modal.types';
 
 import React from 'react';
 import Reactmodal from 'react-modal';
-import Draggable from "react-draggable";
+import Draggable from 'react-draggable';
 import './_modal.scss';
 
 Reactmodal.setAppElement('#root');

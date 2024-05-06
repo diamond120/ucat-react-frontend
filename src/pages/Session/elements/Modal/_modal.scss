@@ -1,7 +1,6 @@
 .ReactModal {
     &__Overlay {
-        background: none !important;
-        pointer-events: none;
+        background: transparent !important;
     }
 
     &__Content {
@@ -17,12 +16,11 @@
 
 .modal {
     &__container {
-        min-width: 30rem;
         max-width: 60rem;
         color: #FFFFFF;
         background-color: #006DAA;
         border: 1px solid #FFFFFF;
-        pointer-events: visible;
+        pointer-events: none;
     }
 
     &__header {
@@ -31,6 +29,7 @@
         align-items: center;
         padding: 0.4rem 0.5rem;
         border-bottom: 1px solid #FFFFFF;
+        pointer-events: visible;
         cursor: move;
     }
 
@@ -67,6 +66,7 @@
             font-size: 1rem;
             color: #FFFFFF;
             border-color: #FFFFFF;
+            pointer-events: visible;
 
             &:not(:first-child) {
                 margin-left: 1rem;
