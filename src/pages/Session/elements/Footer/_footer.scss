@@ -1,0 +1,32 @@
+.footer {
+    &__container {
+        position: absolute;
+        bottom: 0;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+        margin: 0;
+        padding: 0;
+        border-top: 2px solid #FFFFFF;
+        color: #FFFFFF;
+        background-color: #006DAA;
+    }
+
+    &__buttons {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 5px;
+    }
+
+    &__button-left {
+        padding: 0 5px;
+        border-left: 2px solid #FFFFFF;
+    }
+
+    &__button-right {
+        padding: 0 5px;
+        border-right: 2px solid #FFFFFF;
+    }
+}

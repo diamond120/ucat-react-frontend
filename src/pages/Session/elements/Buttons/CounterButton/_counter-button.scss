@@ -1,0 +1,12 @@
+.counter-button {
+    padding-left: 22px;
+    color: #FFFFFF;
+    font-size: 12pt;
+    background-image: url('/img/btnIcons.png');
+    background-position: left -90px;
+
+    &:hover {
+        color: #FFFF00;
+        background-position: left -130px;
+    }
+}

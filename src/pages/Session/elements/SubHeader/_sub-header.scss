@@ -1,0 +1,20 @@
+.sub-header {
+    &__container {
+        position: absolute;
+        top: 47px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        height: 30px;
+        width: 100%;
+        color: #FFFFFF;
+        background-color: #5E98D9;
+        border-bottom: 2px solid #FFFFFF;
+    }
+
+    &__buttons {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+}

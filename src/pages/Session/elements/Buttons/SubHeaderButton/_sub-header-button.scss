@@ -1,0 +1,37 @@
+.sub-header-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: 10px;
+    color: #FFFFFF;
+    font-size: 12pt;
+    background-image: url('/img/btnIcons.png');
+
+    &:hover {
+        color: #FFFF00;
+    }
+
+    &__answer {
+        background-position: left -443px;
+
+        &:hover {
+            background-position: left -574px;
+        }
+    }
+
+    &__calculator {
+        background-position: left -2550px;
+
+        &:hover {
+            background-position: left -2593px;
+        }
+    }
+
+    &__flag {
+        background-position: left -973px;
+
+        &:hover {
+            background-position: left -1018px;
+        }
+    }
+}

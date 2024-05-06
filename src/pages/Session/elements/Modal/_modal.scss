@@ -1,0 +1,80 @@
+.ReactModal {
+    &__Overlay {
+        background: none !important;
+        pointer-events: none;
+    }
+
+    &__Content {
+        position: fixed !important;
+        inset: 0 !important;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: none !important;
+        overflow: hidden !important;
+    }
+}
+
+.modal {
+    &__container {
+        min-width: 30rem;
+        max-width: 60rem;
+        color: #FFFFFF;
+        background-color: #006DAA;
+        border: 1px solid #FFFFFF;
+        pointer-events: visible;
+    }
+
+    &__header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0.4rem 0.5rem;
+        border-bottom: 1px solid #FFFFFF;
+        cursor: move;
+    }
+
+    &__title {
+        margin: 0;
+        font-size: 1rem;
+        font-weight: normal;
+    }
+
+    &__close-button {
+        padding-left: 15px;
+        background-image: url('/img/btnIcons.png');
+        background-position: left -2467px;
+
+        &:hover {
+            background-position: left -2507px;
+        }
+    }
+
+    &__content {
+        padding: 1rem;
+        text-align: center;
+    }
+
+    &__footer {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 0 1rem 1rem 1rem;
+
+        > button {
+            padding: 0.25rem 0.75rem;
+            height: auto;
+            font-size: 1rem;
+            color: #FFFFFF;
+            border-color: #FFFFFF;
+
+            &:not(:first-child) {
+                margin-left: 1rem;
+            }
+
+            &:hover {
+                color: #FFFF00;
+            }
+        }
+    }
+}

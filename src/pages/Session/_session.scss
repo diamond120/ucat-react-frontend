@@ -1,6 +1,19 @@
 .session {
     &__container {
-        padding: 30px;
-        margin-left: 340px;
+        margin: 0;
+        padding: 0;
+    }
+
+    &__content {
+        position: absolute;
+        top: 79px;
+        bottom: 33px;
+        display: block;
+        width: 100%;
+        height: auto;
+        margin: 0 0 2px 0;
+        color: #000000;
+        background-color: #FFFFFF;
+        overflow: auto;
     }
 }

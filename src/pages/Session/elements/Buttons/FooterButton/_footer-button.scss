@@ -1,0 +1,46 @@
+.footer-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #FFFFFF;
+    font-size: 14pt;
+    background-image: url('/img/btnIcons.png');
+
+    &:hover {
+        color: #FFFF00;
+    }
+
+    &__end {
+        background-position: left -1192px;
+
+        &:hover {
+            background-position: left -1235px;
+        }
+    }
+
+    &__prev {
+        background-position: left -1622px;
+
+        &:hover {
+            background-position: left -1664px;
+        }
+    }
+
+    &__next {
+        padding-left: 0;
+        padding-right: 25px;
+        background-position: right -1831px;
+
+        &:hover {
+            background-position: right -1872px;
+        }
+    }
+
+    &__navigator {
+        background-position: left -1705px;
+
+        &:hover {
+            background-position: left -1748px;
+        }
+    }
+}
