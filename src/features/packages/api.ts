@@ -10,8 +10,8 @@ export const packagesApi = createApi({
     baseUrl: `${variables.API_URL}/packages`,
   }),
   endpoints: (builder) => ({
-    getPackages: builder.query<Package[], string>({
-      query: () => '',
+    getPackages: builder.query<Package[], void>({
+      query: () => ({ url: '' }),
     }),
   }),
 });

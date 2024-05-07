@@ -1,16 +1,19 @@
-import type { Package } from './types';
+import type { RootState } from 'store';
+import type { Package, PackagesState } from './types';
 
 import { createSlice } from '@reduxjs/toolkit';
 import { packagesApi } from './api';
 
-const INITIAL_STATE: { data: Package[] } = {
+const INITIAL_STATE: PackagesState = {
   data: [],
 };
 
 const packagesSlice = createSlice({
   name: 'packages',
   initialState: INITIAL_STATE,
-  reducers: {},
+  reducers: {
+    // Define any custom reducers here if needed
+  },
   extraReducers: (builder) => {
     builder.addMatcher(packagesApi.endpoints.getPackages.matchFulfilled, (state, { payload }) => {
       state.data = payload;
@@ -20,4 +23,5 @@ const packagesSlice = createSlice({
 
 export default packagesSlice.reducer;
 
-export const selectPackages = (state: { packages: { data: Package[] } }) => state.packages.data;
+// Selector with explicit return type
+export const selectPackages = (state: RootState): Package[] => state.packages.data;
