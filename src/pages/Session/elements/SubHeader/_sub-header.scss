@@ -18,3 +18,30 @@
         align-items: center;
     }
 }
+
+.calculator__modal {
+    .modal__content {
+        padding: 0;
+    }
+
+    .modal__footer {
+        display: none;
+    }
+}
+
+.explain__modal {
+    .modal__header {
+        border: none;
+    }
+
+    .modal__content {
+        margin: 3px;
+        padding: 1rem;
+        color: #000000;
+        background-color: #FFFFFF;
+    }
+
+    .modal__footer {
+        display: none;
+    }
+}

@@ -1,36 +1,33 @@
-import React, { useState } from 'react';
-import { Header, SubHeader, Footer, Modal, Calculator, SubHeaderButton } from './elements';
+import React, { useEffect } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
+import { useGetSessionQuery } from 'features/sessions/api';
+import { Loading } from 'components';
+import { Header, SubHeader, Footer } from './elements';
+import * as routes from 'constants/routes';
 import './_session.scss';
 
 export const Session = () => {
-  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-  const [isCalculatorOpen, setIsCalculatorOpen] = useState<boolean>(false);
+  const navigate = useNavigate();
+  const { session_id } = useParams();
 
-  const handleModalOpen = () => setIsModalOpen(true);
-  const handleModalClose = () => setIsModalOpen(false);
+  const sessionId = Number(session_id);
+  const { isLoading, isError } = useGetSessionQuery({ session_id: sessionId });
 
-  const handleCalculatorOpen = () => setIsCalculatorOpen(true);
-  const handleCalculatorClose = () => setIsCalculatorOpen(false);
+  useEffect(() => {
+    if (isError) {
+      navigate(routes.RESTRICTED);
+    }
+  }, [isError]);
+
+  if (isLoading) {
+    return <Loading />;
+  }
 
   return (
     <div className="session__container">
       <Header />
       <SubHeader />
-      <div className="session__content">
-        <button onClick={handleCalculatorOpen}>Open Calculator</button>
-        <button onClick={handleModalOpen}>Open Modal</button>
-        {isCalculatorOpen && (
-          <Modal title={<SubHeaderButton type="calculator" />} onClose={handleCalculatorClose}>
-            <Calculator />
-          </Modal>
-        )}
-        {isModalOpen && (
-          <Modal title="Verbal Reasoning" onClose={handleModalClose}>
-            If you are ready to begin the exam, select the Yes button. Otherwise, select the No button to return to the
-            previous screen.
-          </Modal>
-        )}
-      </div>
+      <div className="session__content"></div>
       <Footer />
     </div>
   );
