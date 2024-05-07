@@ -1,0 +1,10 @@
+.loading {
+    &__container {
+        position: fixed;
+        inset: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: rgba($color: #cccccc, $alpha: 0.35);
+    }
+}
