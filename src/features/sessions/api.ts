@@ -27,10 +27,10 @@ export const sessionsApi = createApi({
     getSession: builder.query<GetSessionResponse, GetSessionParams>({
       query: ({ session_id }) => ({ url: `/${session_id}` }),
     }),
-    getQuesionResponse: builder.query<GetQuestionResponse, GetQuestionParams>({
+    getQuestionResponse: builder.query<GetQuestionResponse, GetQuestionParams>({
       query: ({ session_id, question_id }) => ({ url: `/${session_id}/questions/${question_id}` }),
     }),
-    putQuesionResponse: builder.query<PutQuestionResponse, PutQuestionParams>({
+    putQuestionResponse: builder.query<PutQuestionResponse, PutQuestionParams>({
       query: ({ session_id, question_id, value, flagged }) => ({
         url: `/${session_id}/questions/${question_id}`,
         method: 'POST',
@@ -45,5 +45,5 @@ export const sessionsApi = createApi({
 
 // Export hooks for usage in functional components, which are
 // auto-generated based on the defined endpoints
-export const { useStartSessionMutation, useGetSessionQuery, useGetQuesionResponseQuery, usePutQuesionResponseQuery } =
+export const { useStartSessionMutation, useGetSessionQuery, useGetQuestionResponseQuery, usePutQuestionResponseQuery } =
   sessionsApi;

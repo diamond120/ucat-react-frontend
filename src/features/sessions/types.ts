@@ -38,16 +38,20 @@ export type QuestionResponse = {
   flagged: 0 | 1;
 };
 
+export type Session = {
+  id: string | null;
+  section_id: number | null;
+  question_id: number | null;
+  started_at: Date | null;
+  finished_at: Date | null;
+  completed: 0 | 1;
+  package: Package | null;
+  sections: Section[];
+};
+
 export type SessionsState = {
-  current_session: {
-    id: string | null;
-    section_id: string | null;
-    started_at: Date | null;
-    finished_at: Date | null;
-    completed: number | null;
-    package: Package | null;
-    sections: Section[];
-  };
+  current_session: Session;
+  current_question_response: QuestionResponse | null;
 };
 
 export type StartSessionResponse = {
@@ -62,20 +66,20 @@ export type StartSessionParams = {
 export type GetSessionResponse = SessionsState['current_session'];
 
 export type GetSessionParams = {
-  session_id: number;
+  session_id: string;
 };
 
 export type GetQuestionResponse = QuestionResponse;
 
 export type GetQuestionParams = {
-  session_id: number;
+  session_id: string;
   question_id: number;
 };
 
 export type PutQuestionResponse = QuestionResponse;
 
 export type PutQuestionParams = {
-  session_id: number;
+  session_id: string;
   question_id: number;
   value: string | null;
   flagged: boolean;

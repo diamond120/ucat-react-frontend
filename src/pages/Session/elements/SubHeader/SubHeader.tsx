@@ -1,10 +1,14 @@
 import React, { useState } from 'react';
+import { useSelector } from 'react-redux';
+import * as selectors from 'features/sessions/selectors';
 import { SubHeaderButton } from '../Buttons';
 import { Calculator } from '../Calculator';
 import { Modal } from '../Modal';
 import './_sub-header.scss';
 
 export const SubHeader = () => {
+  const currentQuestionResponse = useSelector(selectors.selectCurrentQuestionResponse);
+
   const [isExplainModalOpen, setIsExplainModalOpen] = useState<boolean>(false);
   const [isCalculatorModalOpen, setIsCalculatorModalOpen] = useState<boolean>(false);
 
@@ -15,12 +19,16 @@ export const SubHeader = () => {
     <React.Fragment>
       <div className="sub-header__container">
         <div className="sub-header__buttons">
-          <SubHeaderButton type="answer" onClick={handleExplainModalToggle(true)} />
+          {currentQuestionResponse?.question.explanation && (
+            <SubHeaderButton type="answer" onClick={handleExplainModalToggle(true)} />
+          )}
           <SubHeaderButton type="calculator" onClick={handleCalculatorModalModalToggle(true)} />
         </div>
-        <div className="sub-header__buttons">
-          <SubHeaderButton type="flag" />
-        </div>
+        {currentQuestionResponse && (
+          <div className="sub-header__buttons">
+            <SubHeaderButton type="flag" flagged={Boolean(currentQuestionResponse.flagged)} />
+          </div>
+        )}
       </div>
 
       {isCalculatorModalOpen && (
@@ -39,10 +47,7 @@ export const SubHeader = () => {
           title={<SubHeaderButton type="answer" />}
           onClose={handleExplainModalToggle(false)}
         >
-          Correct response: A If the clinical guidelines state that an identification badge must be worn for patient
-          contact, then this is clearly of great importance. Clinical guidelines are in place to protect the patients
-          and public and ensure a standardised approach to effective and safe patient care. This consideration is
-          therefore very important.
+          <div dangerouslySetInnerHTML={{ __html: currentQuestionResponse?.question.explanation ?? '' }} />
         </Modal>
       )}
     </React.Fragment>

@@ -35,9 +35,12 @@
     }
 
     .modal__content {
+        min-width: 40rem;
+        min-height: 20rem;
         margin: 3px;
         padding: 1rem;
         color: #000000;
+        text-align: left;
         background-color: #FFFFFF;
     }
 

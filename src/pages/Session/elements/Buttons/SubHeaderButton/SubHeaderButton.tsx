@@ -5,7 +5,7 @@ import classNames from 'classnames';
 import * as constants from './SubHeaderButton.constants';
 import './_sub-header-button.scss';
 
-export const SubHeaderButton = ({ type, onClick }: SubHeaderButtonProps) => {
+export const SubHeaderButton = ({ type, flagged, onClick }: SubHeaderButtonProps) => {
   return (
     <button
       className={classNames({
@@ -13,6 +13,7 @@ export const SubHeaderButton = ({ type, onClick }: SubHeaderButtonProps) => {
         'sub-header-button__answer': type === 'answer',
         'sub-header-button__calculator': type === 'calculator',
         'sub-header-button__flag': type === 'flag',
+        'sub-header-button__flag--is-flagged': type === 'flag' && flagged,
       })}
       onClick={onClick}
     >

@@ -12,7 +12,7 @@ export const CounterButton = ({ currentIndex, totalCount }: CounterButtonProps) 
     }
 
     return null;
-  }, [isVisibleContent]);
+  }, [isVisibleContent, currentIndex, totalCount]);
 
   const handleButtonClick = () => setIsVisibleContent(!isVisibleContent);
 
