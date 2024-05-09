@@ -1,0 +1,31 @@
+.package-instruction {
+    &__container {
+        font-family: arial;
+    }
+
+    &__header {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        
+        > h5 {
+            font-family: arial;
+            font-size: 1rem;
+        }
+    }
+
+    &__content {
+        > * {
+            font-size: 1rem;
+        }
+
+        > h6 {
+            margin-bottom: 1rem;
+        }
+
+        > p {
+            padding-bottom: 1rem;
+        }
+    }
+}

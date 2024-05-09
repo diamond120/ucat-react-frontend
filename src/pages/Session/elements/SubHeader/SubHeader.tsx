@@ -1,13 +1,17 @@
+import type { SubHeaderProps } from './SubHeader.types';
+
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import * as selectors from 'features/sessions/selectors';
 import { SubHeaderButton } from '../Buttons';
 import { Calculator } from '../Calculator';
 import { Modal } from '../Modal';
+import { SessionSectionType } from '../../Session.constants';
 import './_sub-header.scss';
 
-export const SubHeader = () => {
+export const SubHeader = ({ sectionType }: SubHeaderProps) => {
   const currentQuestionResponse = useSelector(selectors.selectCurrentQuestionResponse);
+  const currentSection = useSelector(selectors.selectCurrentSection);
 
   const [isExplainModalOpen, setIsExplainModalOpen] = useState<boolean>(false);
   const [isCalculatorModalOpen, setIsCalculatorModalOpen] = useState<boolean>(false);
@@ -19,14 +23,16 @@ export const SubHeader = () => {
     <React.Fragment>
       <div className="sub-header__container">
         <div className="sub-header__buttons">
-          {currentQuestionResponse?.question.explanation && (
+          {sectionType === SessionSectionType.QUESTION && (
             <SubHeaderButton type="answer" onClick={handleExplainModalToggle(true)} />
           )}
-          <SubHeaderButton type="calculator" onClick={handleCalculatorModalModalToggle(true)} />
+
+          {currentSection && <SubHeaderButton type="calculator" onClick={handleCalculatorModalModalToggle(true)} />}
         </div>
-        {currentQuestionResponse && (
+
+        {sectionType === SessionSectionType.QUESTION && (
           <div className="sub-header__buttons">
-            <SubHeaderButton type="flag" flagged={Boolean(currentQuestionResponse.flagged)} />
+            <SubHeaderButton type="flag" flagged={Boolean(currentQuestionResponse?.flagged)} />
           </div>
         )}
       </div>

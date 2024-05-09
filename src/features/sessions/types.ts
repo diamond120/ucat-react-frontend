@@ -85,9 +85,16 @@ export type PutQuestionParams = {
   flagged: boolean;
 };
 
-export type GetSectionResponse = SessionsState['current_session'];
+export type PutSectionResponse = {
+  id: Section['id'];
+  name: Section['name'];
+  package_id: Package['id'];
+  time: number | null;
+  time_sen: number | null;
+  type: Section['type'];
+};
 
-export type GetSectionParams = {
-  session_id: number;
+export type PutSectionParams = {
+  session_id: string;
   section_id: number;
 };

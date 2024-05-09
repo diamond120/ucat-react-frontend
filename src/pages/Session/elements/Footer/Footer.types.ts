@@ -1,5 +1,8 @@
-import type { Question } from 'features/sessions/types';
+import type { Question, Section } from 'features/sessions/types';
+
+import { SessionSectionType } from '../../Session.constants';
 
 export type FooterProps = {
-  onQuestionChange: (questionId: Question['id'] | null) => () => void;
+  sectionType: SessionSectionType;
+  onSectionQuestionChange: (questionId: Question['id'] | null, sectionId: Section['id'] | null) => void;
 };

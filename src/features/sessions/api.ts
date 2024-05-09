@@ -3,8 +3,8 @@ import type {
   StartSessionParams,
   GetSessionResponse,
   GetSessionParams,
-  GetSectionResponse,
-  GetSectionParams,
+  PutSectionResponse,
+  PutSectionParams,
   GetQuestionResponse,
   GetQuestionParams,
   PutQuestionResponse,
@@ -14,7 +14,6 @@ import type {
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import * as variables from 'constants/variables';
 
-// Define a service using a base URL and expected endpoints
 export const sessionsApi = createApi({
   reducerPath: 'sessionsApi',
   baseQuery: fetchBaseQuery({
@@ -37,13 +36,16 @@ export const sessionsApi = createApi({
         body: { value, flagged },
       }),
     }),
-    getSelection: builder.query<GetSectionResponse, GetSectionParams>({
-      query: ({ session_id, section_id }) => ({ url: `/${session_id}/sections/${section_id}` }),
+    putSelection: builder.mutation<PutSectionResponse, PutSectionParams>({
+      query: ({ session_id, section_id }) => ({ url: `/${session_id}/sections/${section_id}`, method: 'PUT' }),
     }),
   }),
 });
 
-// Export hooks for usage in functional components, which are
-// auto-generated based on the defined endpoints
-export const { useStartSessionMutation, useGetSessionQuery, useGetQuestionResponseQuery, usePutQuestionResponseQuery } =
-  sessionsApi;
+export const {
+  useStartSessionMutation,
+  useGetSessionQuery,
+  useGetQuestionResponseQuery,
+  usePutQuestionResponseQuery,
+  usePutSelectionMutation,
+} = sessionsApi;

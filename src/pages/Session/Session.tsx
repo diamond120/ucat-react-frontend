@@ -1,65 +1,77 @@
-import { Question } from 'features/sessions/types';
+import { Question, Section } from 'features/sessions/types';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState, useCallback } from 'react';
 import { useSelector } from 'react-redux';
 import { useParams, useNavigate } from 'react-router-dom';
-import { useGetSessionQuery, useGetQuestionResponseQuery } from 'features/sessions/api';
+import { useGetSessionQuery, usePutSelectionMutation } from 'features/sessions/api';
 import * as selectors from 'features/sessions/selectors';
 import { Loading } from 'components';
-import { Header, SubHeader, Footer } from './elements';
+import { SessionSectionType } from './Session.constants';
+import { Header, SubHeader, Footer, QuestionSection, PackageInstruction, SectionInstruction } from './elements';
 import * as routes from 'constants/routes';
 import './_session.scss';
 
 export const Session = () => {
   const navigate = useNavigate();
-
-  const { session_id = '' } = useParams();
-
-  const { isLoading, isError } = useGetSessionQuery({ session_id });
-
+  const { session_id = '' } = useParams<{ session_id: string }>();
+  const { isLoading, isError, refetch: refetchSession } = useGetSessionQuery({ session_id });
+  const [navigateToSection, { isLoading: isNavigatingSection }] = usePutSelectionMutation();
   const currentSession = useSelector(selectors.selectCurrentSession);
+  const [currentQuestionId, setCurrentQuestionId] = useState<Question['id'] | null>(currentSession?.question_id);
 
-  const [currentQuestionId, setCurrentQuestionId] = useState<Question['id'] | null>(currentSession.question_id);
-
-  const { data: questionResponse, isLoading: isQuestionLoading } = useGetQuestionResponseQuery(
-    {
-      session_id,
-      question_id: currentQuestionId ?? 0,
-    },
-    {
-      skip: !currentQuestionId,
-      refetchOnMountOrArgChange: true,
-    },
+  const sectionType = useMemo(
+    () =>
+      currentSession?.section_id && currentQuestionId
+        ? SessionSectionType.QUESTION
+        : currentSession?.section_id
+          ? SessionSectionType.SECTION_INSTRUCTION
+          : SessionSectionType.PACKAGE_INSTRUCTION,
+    [currentSession?.section_id, currentQuestionId],
   );
 
-  const handleQuestionChange = (questionId: Question['id'] | null) => () => {
-    setCurrentQuestionId(questionId);
-  };
+  useEffect(() => {
+    isError && !currentSession?.id && navigate(routes.RESTRICTED);
+  }, [isError, currentSession?.id, navigate]);
 
   useEffect(() => {
-    if (isError && !currentSession?.id) {
-      navigate(routes.RESTRICTED);
-    }
-  }, [isError, currentSession.id]);
+    currentSession?.question_id !== currentQuestionId && setCurrentQuestionId(currentSession.question_id);
+  }, [currentSession?.question_id]);
 
-  useEffect(() => {
-    if (currentSession.question_id !== currentQuestionId) {
-      setCurrentQuestionId(currentSession.question_id);
-    }
-  }, [currentSession.question_id]);
+  const handleSectionQuestionChange = useCallback(
+    (questionId: Question['id'] | null, sectionId: Section['id'] | null) => {
+      if (sectionId) {
+        navigateToSection({ session_id, section_id: sectionId })
+          .unwrap()
+          .then(() => {
+            refetchSession();
+            questionId && setCurrentQuestionId(questionId);
+          });
+      } else {
+        questionId && setCurrentQuestionId(questionId);
+      }
+    },
+    [navigateToSection, refetchSession, session_id],
+  );
 
-  if (isLoading || !currentSession.id) {
+  if (isLoading || !currentSession?.id) {
     return <Loading />;
   }
 
   return (
     <div className="session__container">
       <Header />
-      <SubHeader />
-      <div className="session__content">{questionResponse?.question_id}</div>
-      <Footer onQuestionChange={handleQuestionChange} />
-
-      {isQuestionLoading && <Loading />}
+      <SubHeader sectionType={sectionType} />
+      <div className="session__content">
+        {sectionType === SessionSectionType.PACKAGE_INSTRUCTION && <PackageInstruction />}
+        {sectionType === SessionSectionType.SECTION_INSTRUCTION && (
+          <SectionInstruction sectionId={currentSession.section_id!} />
+        )}
+        {sectionType === SessionSectionType.QUESTION && (
+          <QuestionSection sessionId={session_id} questionId={currentQuestionId} />
+        )}
+      </div>
+      <Footer sectionType={sectionType} onSectionQuestionChange={handleSectionQuestionChange} />
+      {isNavigatingSection && <Loading />}
     </div>
   );
 };

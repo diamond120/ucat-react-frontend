@@ -20,6 +20,8 @@
 }
 
 .calculator__modal {
+    min-width: unset;
+
     .modal__content {
         padding: 0;
     }
