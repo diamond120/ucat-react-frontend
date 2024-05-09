@@ -2,18 +2,17 @@ import type { QuestionResponse } from 'features/sessions/types';
 import type { QuestionSectionProps } from './QuestionSection.types';
 
 import React from 'react';
+import { useSelector } from 'react-redux';
 import classNames from 'classnames';
+import * as selectors from 'features/sessions/selectors';
 import { useGetQuestionResponseQuery, usePutQuestionResponseMutation } from 'features/sessions/api';
 import { Loading } from 'components';
 import { RadioOptions } from './elements';
 import './_question-section.scss';
 
 export const QuestionSection = ({ sessionId, questionId }: QuestionSectionProps) => {
-  const {
-    data,
-    isLoading,
-    refetch: refetchQuestion,
-  } = useGetQuestionResponseQuery(
+  const currentQuestionResponse = useSelector(selectors.selectCurrentQuestionResponse);
+  const { isLoading: isLoadingQuestionResponse } = useGetQuestionResponseQuery(
     {
       session_id: sessionId,
       question_id: questionId,
@@ -27,14 +26,15 @@ export const QuestionSection = ({ sessionId, questionId }: QuestionSectionProps)
   const [answerToQuestion, { isLoading: isAnsweringQuestion }] = usePutQuestionResponseMutation();
 
   const submitResponse = (value: QuestionResponse['value']) => {
-    answerToQuestion({ session_id: sessionId, question_id: questionId, value, flagged: false })
-      .unwrap()
-      .then(() => {
-        refetchQuestion();
-      });
+    answerToQuestion({
+      session_id: sessionId,
+      question_id: questionId,
+      value,
+      flagged: Boolean(currentQuestionResponse?.flagged),
+    });
   };
 
-  if (isLoading || !data) {
+  if (isLoadingQuestionResponse || !currentQuestionResponse) {
     return <Loading />;
   }
 
@@ -42,29 +42,37 @@ export const QuestionSection = ({ sessionId, questionId }: QuestionSectionProps)
     <div className="question-section__container">
       <div
         className={classNames('question-section__content', {
-          'question-section__content--split': data.question.situation.split,
+          'question-section__content--split':
+            currentQuestionResponse.question.situation.split && currentQuestionResponse.question.type !== 'DD',
         })}
       >
         <div className="question-section__situation">
           <div
             className="question-section__situation--text"
-            dangerouslySetInnerHTML={{ __html: data.question.situation.text ?? '' }}
+            dangerouslySetInnerHTML={{ __html: currentQuestionResponse.question.situation.text ?? '' }}
           />
-          {data.question.situation.image_url && (
-            <img className="question-section__situation--img" src={data.question.situation.image_url} />
+          {currentQuestionResponse.question.situation.image_url && (
+            <img
+              className="question-section__situation--img"
+              src={currentQuestionResponse.question.situation.image_url}
+            />
           )}
         </div>
 
         <div className="question-section__question">
           <div
             className="question-section__question--text"
-            dangerouslySetInnerHTML={{ __html: data.question.text ?? '' }}
+            dangerouslySetInnerHTML={{ __html: currentQuestionResponse.question.text ?? '' }}
           />
-          {data.question.image_url && (
-            <img className="question-section__situation--img" src={data.question.image_url} />
+          {currentQuestionResponse.question.image_url && (
+            <img className="question-section__situation--img" src={currentQuestionResponse.question.image_url} />
           )}
 
-          <RadioOptions question={data.question} value={data.value} onChange={submitResponse} />
+          <RadioOptions
+            question={currentQuestionResponse.question}
+            value={currentQuestionResponse.value}
+            onChange={submitResponse}
+          />
         </div>
       </div>
       {isAnsweringQuestion && <Loading />}

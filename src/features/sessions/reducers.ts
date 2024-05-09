@@ -34,6 +34,15 @@ const sessionsSlice = createSlice({
       state.current_session = { ...state.current_session, question_id: payload.question_id };
       state.current_question_response = { ...payload };
     });
+    builder.addMatcher(sessionsApi.endpoints.putQuestionResponse.matchFulfilled, (state, { payload }) => {
+      if (state.current_question_response) {
+        state.current_question_response = {
+          ...state.current_question_response,
+          value: payload.value,
+          flagged: payload.flagged ? 1 : 0,
+        };
+      }
+    });
     builder.addMatcher(sessionsApi.endpoints.putSelection.matchFulfilled, (state) => {
       state.current_question_response = null;
     });

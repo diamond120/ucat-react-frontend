@@ -31,7 +31,7 @@ export type Situation = {
 
 export type QuestionResponse = {
   id: number;
-  session_id: number;
+  session_id: string;
   question_id: Question['id'];
   question: Question;
   value: string;
@@ -76,7 +76,13 @@ export type GetQuestionParams = {
   question_id: number;
 };
 
-export type PutQuestionResponse = QuestionResponse;
+export type PutQuestionResponse = {
+  flagged: boolean;
+  id: QuestionResponse['id'];
+  question_id: QuestionResponse['question_id'];
+  session_id: QuestionResponse['session_id'];
+  value: QuestionResponse['value'];
+};
 
 export type PutQuestionParams = {
   session_id: string;
