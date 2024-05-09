@@ -1,0 +1,15 @@
+.radio_options {
+    &__container {
+        display: flex;
+        flex-direction: column;
+        margin: 1.5rem 2rem;
+    }
+
+    &__item {
+        margin: 0.65rem 0;
+
+        &--label {
+            margin-left: 2rem;
+        }
+    }
+}

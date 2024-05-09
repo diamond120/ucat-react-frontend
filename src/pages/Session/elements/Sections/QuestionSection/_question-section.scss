@@ -1,20 +1,45 @@
 .question-section {
     &__container {
+        display: flex;
+        padding-bottom: 2px;
         font-family: arial;
-        font-size: 1rem;
+        font-size: 0.9125rem;
     }
 
     &__content {
-        > * {
-            font-size: 1rem;
-        }
+        display: flex;
+        flex-direction: column;
+        border: 1px solid rgb(187, 187, 187);
+        overflow: auto;
 
-        > h6 {
-            margin-bottom: 1rem;
-        }
+        &--split {
+            flex-direction: row;
 
-        > p {
-            padding-bottom: 1rem;
+            .question-section__situation {
+                flex: 60%;
+                border-right: 7px solid #006DAA;
+            }
+
+            .question-section__question {
+                flex: 40%;
+            }
+
+            /* smaller than 600px aka mobile */
+            @media screen and (max-width: 600px) {
+                flex-direction: column;
+
+                .question-section__situation {
+                    border-right: none;
+                }
+            }
         }
+    }
+
+    &__situation {
+        padding: 1.25rem;
+    }
+
+    &__question {
+        padding: 1.25rem;
     }
 }

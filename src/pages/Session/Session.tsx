@@ -66,7 +66,7 @@ export const Session = () => {
         {sectionType === SessionSectionType.SECTION_INSTRUCTION && (
           <SectionInstruction sectionId={currentSession.section_id!} />
         )}
-        {sectionType === SessionSectionType.QUESTION && (
+        {sectionType === SessionSectionType.QUESTION && currentQuestionId && (
           <QuestionSection sessionId={session_id} questionId={currentQuestionId} />
         )}
       </div>

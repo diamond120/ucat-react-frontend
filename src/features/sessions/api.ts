@@ -29,7 +29,7 @@ export const sessionsApi = createApi({
     getQuestionResponse: builder.query<GetQuestionResponse, GetQuestionParams>({
       query: ({ session_id, question_id }) => ({ url: `/${session_id}/questions/${question_id}` }),
     }),
-    putQuestionResponse: builder.query<PutQuestionResponse, PutQuestionParams>({
+    putQuestionResponse: builder.mutation<PutQuestionResponse, PutQuestionParams>({
       query: ({ session_id, question_id, value, flagged }) => ({
         url: `/${session_id}/questions/${question_id}`,
         method: 'POST',
@@ -46,6 +46,6 @@ export const {
   useStartSessionMutation,
   useGetSessionQuery,
   useGetQuestionResponseQuery,
-  usePutQuestionResponseQuery,
+  usePutQuestionResponseMutation,
   usePutSelectionMutation,
 } = sessionsApi;
