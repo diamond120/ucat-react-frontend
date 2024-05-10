@@ -7,7 +7,7 @@ import classNames from 'classnames';
 import * as selectors from 'features/sessions/selectors';
 import { useGetQuestionResponseQuery, usePutQuestionResponseMutation } from 'features/sessions/api';
 import { Loading } from 'components';
-import { RadioOptions } from './elements';
+import { RadioOptions, DragAndDropOptions } from './elements';
 import './_question-section.scss';
 
 export const QuestionSection = ({ sessionId, questionId }: QuestionSectionProps) => {
@@ -23,7 +23,7 @@ export const QuestionSection = ({ sessionId, questionId }: QuestionSectionProps)
     },
   );
 
-  const [answerToQuestion, { isLoading: isAnsweringQuestion }] = usePutQuestionResponseMutation();
+  const [answerToQuestion] = usePutQuestionResponseMutation();
 
   const submitResponse = (value: QuestionResponse['value']) => {
     answerToQuestion({
@@ -68,14 +68,24 @@ export const QuestionSection = ({ sessionId, questionId }: QuestionSectionProps)
             <img className="question-section__situation--img" src={currentQuestionResponse.question.image_url} />
           )}
 
-          <RadioOptions
-            question={currentQuestionResponse.question}
-            value={currentQuestionResponse.value}
-            onChange={submitResponse}
-          />
+          {currentQuestionResponse.question.type === 'MC' && (
+            <RadioOptions
+              question={currentQuestionResponse.question}
+              value={currentQuestionResponse.value}
+              onChange={submitResponse}
+            />
+          )}
+
+          {currentQuestionResponse.question.type === 'DD' && (
+            <DragAndDropOptions
+              question={currentQuestionResponse.question}
+              value={currentQuestionResponse.value}
+              onChange={submitResponse}
+            />
+          )}
         </div>
       </div>
-      {isAnsweringQuestion && <Loading />}
+      {/* {isAnsweringQuestion && <Loading />} */}
     </div>
   );
 };

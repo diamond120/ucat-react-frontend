@@ -1,0 +1,15 @@
+.answer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100px;
+    height: 50px;
+    background-color: #FFFFFF;
+    border: 1px solid #000000;
+    cursor: grab;
+
+    &__is-dragging {
+        opacity: 0.5;
+        border-color: #0000FF;
+    }
+}

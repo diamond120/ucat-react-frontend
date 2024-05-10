@@ -1,6 +1,7 @@
 .question-section {
     &__container {
         display: flex;
+        flex: 100%;
         padding-bottom: 2px;
         font-family: arial;
         font-size: 0.9125rem;
@@ -9,6 +10,7 @@
     &__content {
         display: flex;
         flex-direction: column;
+        flex: 100%;
         overflow: auto;
 
         &--split {
@@ -27,10 +29,17 @@
             /* smaller than 600px aka mobile */
             @media screen and (max-width: 600px) {
                 flex-direction: column;
+                border: none;
 
                 .question-section__situation {
+                    flex: 0;
                     border-right: none;
                 }
+
+                .question-section__question {
+                    flex: 0;
+                }
+    
             }
         }
     }
