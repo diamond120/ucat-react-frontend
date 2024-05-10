@@ -31,22 +31,3 @@ export const DropArea = ({ onDrop, children, id }: DropAreaProps) => {
     </div>
   );
 };
-
-export const ResetArea = ({ onReset }: { onReset: () => void }) => {
-  const [{ isOver }, drop] = useDrop(
-    () => ({
-      accept: constants.DragDropTypes.ANSWER,
-      drop: () => onReset(),
-      collect: (monitor) => ({
-        isOver: !!monitor.isOver(),
-      }),
-    }),
-    [onReset],
-  );
-
-  return (
-    <div ref={drop} style={{ minHeight: '50px', backgroundColor: isOver ? 'red' : 'lightcoral', padding: '10px' }}>
-      Drag here to cancel the answer
-    </div>
-  );
-};

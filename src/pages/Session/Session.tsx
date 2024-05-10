@@ -50,7 +50,7 @@ export const Session = () => {
         questionId && setCurrentQuestionId(questionId);
       }
     },
-    [navigateToSection, refetchSession, session_id],
+    [session_id],
   );
 
   if (isLoading || !currentSession?.id) {

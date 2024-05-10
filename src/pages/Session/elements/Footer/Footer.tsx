@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import * as selectors from 'features/sessions/selectors';
 import { FooterButton } from '../Buttons';
 import { Modal } from '../Modal';
+import { Navigator } from '../Sections';
 import { SessionSectionType } from '../../Session.constants';
 import * as routes from 'constants/routes';
 import './_footer.scss';
@@ -18,11 +19,13 @@ export const Footer = ({ sectionType, onSectionQuestionChange }: FooterProps) =>
   const prevQuestionId = useSelector(selectors.selectPrevQuestionId);
   const nextQuestionId = useSelector(selectors.selectNextQuestionId);
 
-  const [isBeginExamModalOpen, setIsBeginExamModalOpen] = useState(false);
-  const [isEndExamModalOpen, setIsEndExamModalOpen] = useState(false);
+  const [isBeginExamModalOpen, setIsBeginExamModalOpen] = useState<boolean>(false);
+  const [isEndExamModalOpen, setIsEndExamModalOpen] = useState<boolean>(false);
+  const [isNavigatorModalOpen, setIsNavigatorModalOpen] = useState<boolean>(false);
 
   const toggleBeginExamModal = (isOpen: boolean) => () => setIsBeginExamModalOpen(isOpen);
   const toggleEndExamModal = (isOpen: boolean) => () => setIsEndExamModalOpen(isOpen);
+  const toggleNavigatorModal = (isOpen: boolean) => () => setIsNavigatorModalOpen(isOpen);
 
   const confirmBeginExam = () => {
     toggleBeginExamModal(false)();
@@ -79,7 +82,7 @@ export const Footer = ({ sectionType, onSectionQuestionChange }: FooterProps) =>
           )}
           {currentSection && (
             <div className="footer__button-left">
-              <FooterButton type="navigator" />
+              <FooterButton type="navigator" onClick={toggleNavigatorModal(true)} />
             </div>
           )}
           <div className="footer__button-left">
@@ -112,6 +115,18 @@ export const Footer = ({ sectionType, onSectionQuestionChange }: FooterProps) =>
           onClose={toggleEndExamModal(false)}
         >
           You have chosen to end this exam. Are you sure you want to end this exam?
+        </Modal>
+      )}
+
+      {isNavigatorModalOpen && (
+        <Modal
+          className="navigator__modal"
+          title="Navigator - select a qusetion to go to it"
+          primaryButtonText="Close"
+          onPrimaryButtonClick={toggleNavigatorModal(false)}
+          onClose={toggleNavigatorModal(false)}
+        >
+          <Navigator navigateTo={onSectionQuestionChange} onEnd={toggleNavigatorModal(false)} />
         </Modal>
       )}
     </>

@@ -1,0 +1,77 @@
+.navigator {
+    &__container {
+        height: 25rem;
+        text-align: center;
+        color: #000000;
+        background-color: #FFFFFF;
+        overflow: auto;
+    }
+
+    &__table {
+        width: 100%;
+        border-collapse: collapse;
+
+        th, td {
+            border: 1px solid #C0C0C0;
+            padding: 0.5rem;
+            text-align: left;
+        }
+
+        thead th {
+            color: #FFFFFF;
+            font-size: 1.125rem;
+            text-align: center;
+            background-color: #5E98D9;
+        }
+    }
+
+    &__item {
+        background-color: #FFFFFF;
+
+        &:hover {
+            background-color: #FFFD6F;
+        }
+
+        &:nth-child(even) {
+            background-color: #F4F4F4;
+        }
+
+        &-link {
+            cursor: pointer;
+            text-decoration: none;
+
+            &:hover {
+                text-decoration: underline;
+            }
+        }
+    }
+
+    &__toggle {
+        background-color: #5E98D9;
+        padding: 0.5rem;
+
+        &-title {
+            margin: 0;
+            padding-left: 26px;
+            font-family: arial;
+            font-size: 1rem;
+            text-align: left;
+            color: #FFFFFF;
+            background-repeat: no-repeat;
+            background-image: url('/img/btnIcons.png');
+            background-position: left -2060px;
+            cursor: pointer;
+                
+            &:hover {
+                background-position: left -2102px;
+            }
+            &-is--opened {
+                background-position: left -1976px;
+
+                &:hover {
+                    background-position: left -2018px;
+                }
+            }
+        }
+    }
+}
