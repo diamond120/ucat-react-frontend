@@ -18,7 +18,7 @@ export type Section = {
   id: number;
   name: string;
   type: 'VR' | 'DM' | 'QR' | 'AR' | 'SJ';
-  questions: Pick<Question, 'id' | 'status'>[];
+  questions: (Pick<Question, 'id' | 'status'> & Pick<QuestionResponse, 'flagged'>)[];
 };
 
 export type Situation = {

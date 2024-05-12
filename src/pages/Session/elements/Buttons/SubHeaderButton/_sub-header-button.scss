@@ -36,6 +36,10 @@
 
         &--is-flagged {
             background-position: left -1063px;
+
+            &:hover {                
+                background-position: left -1063px;
+            }
         }
     }
 }

@@ -4,5 +4,6 @@ import { SessionSectionType } from '../../Session.constants';
 
 export type FooterProps = {
   sectionType: SessionSectionType;
-  onSectionQuestionChange: (questionId: Question['id'] | null, sectionId: Section['id'] | null) => void;
+  onSectionChange: (sectionId: Section['id'] | null) => void;
+  onQuestionChange: (questionId: Question['id'] | null) => void;
 };

@@ -11,25 +11,26 @@ import { SessionSectionType } from '../../Session.constants';
 import * as routes from 'constants/routes';
 import './_footer.scss';
 
-export const Footer = ({ sectionType, onSectionQuestionChange }: FooterProps) => {
+export const Footer = ({ sectionType, onSectionChange, onQuestionChange }: FooterProps) => {
   const navigate = useNavigate();
   const currentSection = useSelector(selectors.selectCurrentSection);
-  const prevSection = useSelector(selectors.selectPrevSection);
   const nextSection = useSelector(selectors.selectNextSection);
   const prevQuestionId = useSelector(selectors.selectPrevQuestionId);
   const nextQuestionId = useSelector(selectors.selectNextQuestionId);
 
   const [isBeginExamModalOpen, setIsBeginExamModalOpen] = useState<boolean>(false);
   const [isEndExamModalOpen, setIsEndExamModalOpen] = useState<boolean>(false);
+  const [isEndSectionModalOpen, setIsEndSectionModalOpen] = useState<boolean>(false);
   const [isNavigatorModalOpen, setIsNavigatorModalOpen] = useState<boolean>(false);
 
   const toggleBeginExamModal = (isOpen: boolean) => () => setIsBeginExamModalOpen(isOpen);
   const toggleEndExamModal = (isOpen: boolean) => () => setIsEndExamModalOpen(isOpen);
+  const toggleEndSectionModal = (isOpen: boolean) => () => setIsEndSectionModalOpen(isOpen);
   const toggleNavigatorModal = (isOpen: boolean) => () => setIsNavigatorModalOpen(isOpen);
 
   const confirmBeginExam = () => {
     toggleBeginExamModal(false)();
-    onSectionQuestionChange(null, nextSection?.id ?? null);
+    onSectionChange(nextSection?.id ?? null);
   };
 
   const confirmEndExam = () => {
@@ -37,32 +38,24 @@ export const Footer = ({ sectionType, onSectionQuestionChange }: FooterProps) =>
     navigate(routes.HOME);
   };
 
+  const confirmEndSection = () => {
+    toggleEndSectionModal(false)();
+    onSectionChange(nextSection?.id ?? null);
+  };
+
   const navigatePrev = () => {
     if (prevQuestionId) {
-      onSectionQuestionChange(prevQuestionId, null);
-      return;
+      onQuestionChange(prevQuestionId);
     }
-
-    if (!prevSection) {
-      return;
-    }
-
-    if (sectionType === SessionSectionType.QUESTION) {
-      onSectionQuestionChange(null, currentSection?.id ?? null);
-      return;
-    }
-
-    const lastQuestionId = prevSection.questions[prevSection.questions.length - 1]?.id;
-    onSectionQuestionChange(lastQuestionId, prevSection.id);
   };
 
   const navigateNext = () => {
     if (sectionType === SessionSectionType.PACKAGE_INSTRUCTION) {
       setIsBeginExamModalOpen(true);
     } else if (nextQuestionId) {
-      onSectionQuestionChange(nextQuestionId, null);
-    } else if (nextSection) {
-      onSectionQuestionChange(null, nextSection.id);
+      onQuestionChange(nextQuestionId);
+    } else {
+      onQuestionChange(currentSection?.questions[0].id ?? null);
     }
   };
 
@@ -70,24 +63,33 @@ export const Footer = ({ sectionType, onSectionQuestionChange }: FooterProps) =>
     <>
       <div className="footer__container">
         <div className="footer__buttons">
-          <div className="footer__button-right">
-            <FooterButton type="end" onClick={toggleEndExamModal(true)} />
-          </div>
+          {sectionType === SessionSectionType.PACKAGE_INSTRUCTION && (
+            <div className="footer__button-right">
+              <FooterButton type="end_exam" onClick={toggleEndExamModal(true)} />
+            </div>
+          )}
+          {sectionType === SessionSectionType.QUESTION && (
+            <div className="footer__button-right">
+              <FooterButton type="end_section" onClick={toggleEndSectionModal(true)} />
+            </div>
+          )}
         </div>
         <div className="footer__buttons">
-          {(prevQuestionId || prevSection?.questions.length) && (
+          {prevQuestionId && (
             <div className="footer__button-left">
               <FooterButton type="prev" onClick={navigatePrev} />
             </div>
           )}
-          {currentSection && (
+          {sectionType === SessionSectionType.QUESTION && currentSection && (
             <div className="footer__button-left">
               <FooterButton type="navigator" onClick={toggleNavigatorModal(true)} />
             </div>
           )}
-          <div className="footer__button-left">
-            <FooterButton type="next" onClick={navigateNext} />
-          </div>
+          {nextQuestionId && (
+            <div className="footer__button-left">
+              <FooterButton type="next" onClick={navigateNext} />
+            </div>
+          )}
         </div>
       </div>
 
@@ -118,6 +120,22 @@ export const Footer = ({ sectionType, onSectionQuestionChange }: FooterProps) =>
         </Modal>
       )}
 
+      {isEndSectionModalOpen && (
+        <Modal
+          title="End Section"
+          primaryButtonText="Yes"
+          secondaryButtonText="No"
+          onPrimaryButtonClick={confirmEndSection}
+          onSecondaryButtonClick={toggleEndSectionModal(false)}
+          onClose={toggleEndSectionModal(false)}
+        >
+          You have chosen to end the current section If you click Yes, you will NOT be able to return to this section.{' '}
+          <br />
+          <br />
+          Are you sure you want to end this section?
+        </Modal>
+      )}
+
       {isNavigatorModalOpen && (
         <Modal
           className="navigator__modal"
@@ -126,7 +144,7 @@ export const Footer = ({ sectionType, onSectionQuestionChange }: FooterProps) =>
           onPrimaryButtonClick={toggleNavigatorModal(false)}
           onClose={toggleNavigatorModal(false)}
         >
-          <Navigator navigateTo={onSectionQuestionChange} onEnd={toggleNavigatorModal(false)} />
+          <Navigator navigateTo={onQuestionChange} onEnd={toggleNavigatorModal(false)} />
         </Modal>
       )}
     </>

@@ -1,6 +1,6 @@
-import type { Question, Section } from 'features/sessions/types';
+import type { Question } from 'features/sessions/types';
 
 export type NavigatorProps = {
-  navigateTo: (questionId: Question['id'] | null, sectionId: Section['id'] | null) => void;
+  navigateTo: (questionId: Question['id'] | null) => void;
   onEnd?: () => void;
 };

@@ -1,5 +1,5 @@
 .navigator {
-    &__container {
+    &__content {
         height: 25rem;
         text-align: center;
         color: #000000;
@@ -26,14 +26,20 @@
     }
 
     &__item {
-        background-color: #FFFFFF;
+        &-row {
+            background-color: #FFFFFF;
+    
+            &:nth-child(even) {
+                background-color: #F4F4F4;
+            }
 
-        &:hover {
-            background-color: #FFFD6F;
-        }
+            &--current, &:hover {
+                background-color: #FFFD6F !important;
+            }
 
-        &:nth-child(even) {
-            background-color: #F4F4F4;
+            > td:last-child {
+                text-align: center;
+            }
         }
 
         &-link {
@@ -43,6 +49,27 @@
             &:hover {
                 text-decoration: underline;
             }
+        }
+
+        &-status {
+            text-transform: lowercase;
+
+            &:first-letter {
+                text-transform: uppercase;
+            }
+
+            &--incomplete, &--unseen {
+                color: #FF0000;
+            }
+        }
+
+        &-flagged {
+            display: inline-block;
+            width: 35px;
+            height: 20px;
+            background-repeat: no-repeat;
+            background-image: url('/img/btnIcons.png');
+            background-position: left -2225px;
         }
     }
 
@@ -73,5 +100,11 @@
                 }
             }
         }
+    }
+
+    &__footer {
+        margin-top: 0.5rem;
+        margin-left: 0.5rem;
+        text-align: left;
     }
 }

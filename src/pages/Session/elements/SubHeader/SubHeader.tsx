@@ -10,7 +10,7 @@ import { Modal } from '../Modal';
 import { SessionSectionType } from '../../Session.constants';
 import './_sub-header.scss';
 
-export const SubHeader = ({ sectionType }: SubHeaderProps) => {
+export const SubHeader = ({ sectionType, isSessionCompleted }: SubHeaderProps) => {
   const currentQuestionResponse = useSelector(selectors.selectCurrentQuestionResponse);
   const currentSection = useSelector(selectors.selectCurrentSection);
 
@@ -33,7 +33,7 @@ export const SubHeader = ({ sectionType }: SubHeaderProps) => {
     <React.Fragment>
       <div className="sub-header__container">
         <div className="sub-header__buttons">
-          {sectionType === SessionSectionType.QUESTION && (
+          {isSessionCompleted && sectionType === SessionSectionType.QUESTION && (
             <SubHeaderButton type="answer" onClick={handleExplainModalToggle(true)} />
           )}
 

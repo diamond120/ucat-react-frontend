@@ -37,17 +37,23 @@ export const Session = () => {
     currentSession?.question_id !== currentQuestionId && setCurrentQuestionId(currentSession.question_id);
   }, [currentSession?.question_id]);
 
-  const handleSectionQuestionChange = useCallback(
-    (questionId: Question['id'] | null, sectionId: Section['id'] | null) => {
+  const handleQuestionChange = useCallback(
+    (questionId: Question['id'] | null) => {
+      if (questionId) {
+        setCurrentQuestionId(questionId);
+      }
+    },
+    [session_id],
+  );
+
+  const handleSectionChange = useCallback(
+    (sectionId: Section['id'] | null) => {
       if (sectionId) {
         navigateToSection({ session_id, section_id: sectionId })
           .unwrap()
           .then(() => {
             refetchSession();
-            questionId && setCurrentQuestionId(questionId);
           });
-      } else {
-        questionId && setCurrentQuestionId(questionId);
       }
     },
     [session_id],
@@ -60,7 +66,7 @@ export const Session = () => {
   return (
     <div className="session__container">
       <Header />
-      <SubHeader sectionType={sectionType} />
+      <SubHeader sectionType={sectionType} isSessionCompleted={Boolean(currentSession.completed)} />
       <div className="session__content">
         {sectionType === SessionSectionType.PACKAGE_INSTRUCTION && <PackageInstruction />}
         {sectionType === SessionSectionType.SECTION_INSTRUCTION && (
@@ -70,7 +76,7 @@ export const Session = () => {
           <QuestionSection sessionId={session_id} questionId={currentQuestionId} />
         )}
       </div>
-      <Footer sectionType={sectionType} onSectionQuestionChange={handleSectionQuestionChange} />
+      <Footer sectionType={sectionType} onSectionChange={handleSectionChange} onQuestionChange={handleQuestionChange} />
       {isNavigatingSection && <Loading />}
     </div>
   );
