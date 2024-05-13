@@ -13,6 +13,7 @@ const INITIAL_STATE: SessionsState = {
     completed: 0,
     package: null,
     sections: [],
+    remaining_time: 0,
   },
   current_question_response: null,
 };

@@ -19,6 +19,7 @@ export type Section = {
   name: string;
   type: 'VR' | 'DM' | 'QR' | 'AR' | 'SJ';
   questions: (Pick<Question, 'id' | 'status'> & Pick<QuestionResponse, 'flagged'>)[];
+  time: number;
 };
 
 export type Situation = {
@@ -47,6 +48,7 @@ export type Session = {
   completed: 0 | 1;
   package: Package | null;
   sections: Section[];
+  remaining_time: number;
 };
 
 export type SessionsState = {

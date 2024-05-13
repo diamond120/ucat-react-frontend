@@ -1,0 +1,12 @@
+.timer-button {
+    padding-left: 25px;
+    color: #FFFFFF;
+    font-size: 12pt;
+    background-image: url('/img/btnIcons.png');
+    background-position: left -1px;
+
+    &:hover, &--warning {
+        color: #FFFF00;
+        background-position: left -46px;
+    }
+}

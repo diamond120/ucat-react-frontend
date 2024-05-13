@@ -85,7 +85,7 @@ export const Footer = ({ sectionType, onSectionChange, onQuestionChange }: Foote
               <FooterButton type="navigator" onClick={toggleNavigatorModal(true)} />
             </div>
           )}
-          {nextQuestionId && (
+          {(sectionType === SessionSectionType.PACKAGE_INSTRUCTION || nextQuestionId) && (
             <div className="footer__button-left">
               <FooterButton type="next" onClick={navigateNext} />
             </div>
@@ -129,7 +129,7 @@ export const Footer = ({ sectionType, onSectionChange, onQuestionChange }: Foote
           onSecondaryButtonClick={toggleEndSectionModal(false)}
           onClose={toggleEndSectionModal(false)}
         >
-          You have chosen to end the current section If you click Yes, you will NOT be able to return to this section.{' '}
+          You have chosen to end the current section. If you click Yes, you will NOT be able to return to this section.{' '}
           <br />
           <br />
           Are you sure you want to end this section?
