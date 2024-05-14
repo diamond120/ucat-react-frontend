@@ -10,7 +10,7 @@ import { Loading } from 'components';
 import { RadioOptions, DragAndDropOptions } from './elements';
 import './_question-section.scss';
 
-export const QuestionSection = ({ sessionId, questionId }: QuestionSectionProps) => {
+export const QuestionSection = ({ sessionId, questionId, isSessionCompleted }: QuestionSectionProps) => {
   const currentQuestionResponse = useSelector(selectors.selectCurrentQuestionResponse);
   const { isLoading: isLoadingQuestionResponse } = useGetQuestionResponseQuery(
     {
@@ -26,6 +26,10 @@ export const QuestionSection = ({ sessionId, questionId }: QuestionSectionProps)
   const [answerToQuestion] = usePutQuestionResponseMutation();
 
   const submitResponse = (value: QuestionResponse['value']) => {
+    if (isSessionCompleted) {
+      return;
+    }
+
     answerToQuestion({
       session_id: sessionId,
       question_id: questionId,

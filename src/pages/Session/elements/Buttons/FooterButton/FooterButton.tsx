@@ -13,7 +13,7 @@ export const FooterButton = ({ type, onClick }: FooterButtonProps) => {
         'footer-button__prev': type === 'prev',
         'footer-button__next': type === 'next',
         'footer-button__navigator': type === 'navigator',
-        'footer-button__end': type === 'end_exam' || type === 'end_section',
+        'footer-button__end': type === 'end_exam' || type === 'end_section' || type === 'return_overview',
       })}
       onClick={onClick}
     >

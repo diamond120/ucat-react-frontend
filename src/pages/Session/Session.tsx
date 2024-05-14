@@ -95,7 +95,11 @@ export const Session = () => {
         return currentSession.section_id ? <SectionInstruction sectionId={currentSession.section_id} /> : null;
       case SessionSectionType.QUESTION:
         return currentSession.question_id ? (
-          <QuestionSection sessionId={session_id} questionId={currentSession.question_id} />
+          <QuestionSection
+            sessionId={session_id}
+            questionId={currentSession.question_id}
+            isSessionCompleted={Boolean(currentSession.completed)}
+          />
         ) : null;
       case SessionSectionType.OVERVIEW:
         return <OverviewSection onQuestionChange={handleQuestionChange} />;
@@ -113,7 +117,12 @@ export const Session = () => {
       <Header onSectionChange={handleSectionChange} isSessionCompleted={Boolean(currentSession.completed)} />
       <SubHeader sectionType={sectionType} isSessionCompleted={Boolean(currentSession.completed)} />
       <div className="session__content">{sessionContent}</div>
-      <Footer sectionType={sectionType} onSectionChange={handleSectionChange} onQuestionChange={handleQuestionChange} />
+      <Footer
+        sectionType={sectionType}
+        isSessionCompleted={Boolean(currentSession.completed)}
+        onSectionChange={handleSectionChange}
+        onQuestionChange={handleQuestionChange}
+      />
       {(isNavigatingSection || isEndingSession) && <Loading />}
     </div>
   );

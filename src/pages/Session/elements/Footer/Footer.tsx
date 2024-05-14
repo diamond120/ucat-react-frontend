@@ -11,7 +11,7 @@ import { SessionSectionType } from '../../Session.constants';
 import * as routes from 'constants/routes';
 import './_footer.scss';
 
-export const Footer = ({ sectionType, onSectionChange, onQuestionChange }: FooterProps) => {
+export const Footer = ({ sectionType, isSessionCompleted, onSectionChange, onQuestionChange }: FooterProps) => {
   const navigate = useNavigate();
   const currentSection = useSelector(selectors.selectCurrentSection);
   const nextSection = useSelector(selectors.selectNextSection);
@@ -59,6 +59,10 @@ export const Footer = ({ sectionType, onSectionChange, onQuestionChange }: Foote
     }
   };
 
+  const returnToOverview = () => {
+    onSectionChange(null);
+  };
+
   if (sectionType === SessionSectionType.OVERVIEW) return null;
 
   return (
@@ -72,7 +76,11 @@ export const Footer = ({ sectionType, onSectionChange, onQuestionChange }: Foote
           )}
           {sectionType === SessionSectionType.QUESTION && (
             <div className="footer__button-right">
-              <FooterButton type="end_section" onClick={toggleEndSectionModal(true)} />
+              {isSessionCompleted ? (
+                <FooterButton type="return_overview" onClick={returnToOverview} />
+              ) : (
+                <FooterButton type="end_section" onClick={toggleEndSectionModal(true)} />
+              )}
             </div>
           )}
         </div>

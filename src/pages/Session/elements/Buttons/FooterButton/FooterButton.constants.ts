@@ -6,4 +6,5 @@ export const FOOTER_BUTTON_LABELS: Record<FooterButtonTypes, string> = {
   navigator: 'Navigator',
   end_exam: 'End Exam',
   end_section: 'End Section',
+  return_overview: 'Return to Overview',
 };
