@@ -3,6 +3,8 @@ import type {
   StartSessionParams,
   GetSessionResponse,
   GetSessionParams,
+  EndSessionResponse,
+  EndSessionParams,
   PutSectionResponse,
   PutSectionParams,
   GetQuestionResponse,
@@ -26,6 +28,9 @@ export const sessionsApi = createApi({
     getSession: builder.query<GetSessionResponse, GetSessionParams>({
       query: ({ session_id }) => ({ url: `/${session_id}` }),
     }),
+    endSession: builder.mutation<EndSessionResponse, EndSessionParams>({
+      query: ({ session_id }) => ({ url: `/${session_id}`, method: 'PUT' }),
+    }),
     getQuestionResponse: builder.query<GetQuestionResponse, GetQuestionParams>({
       query: ({ session_id, question_id }) => ({ url: `/${session_id}/questions/${question_id}` }),
     }),
@@ -45,6 +50,7 @@ export const sessionsApi = createApi({
 export const {
   useStartSessionMutation,
   useGetSessionQuery,
+  useEndSessionMutation,
   useGetQuestionResponseQuery,
   usePutQuestionResponseMutation,
   usePutSelectionMutation,

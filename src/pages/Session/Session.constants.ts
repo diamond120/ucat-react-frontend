@@ -1,5 +1,6 @@
 export enum SessionSectionType {
-  PACKAGE_INSTRUCTION = 'package_instruction',
-  SECTION_INSTRUCTION = 'section_instruction',
-  QUESTION = 'question',
+  PACKAGE_INSTRUCTION = 'PACKAGE_INSTRUCTION',
+  SECTION_INSTRUCTION = 'SECTION_INSTRUCTION',
+  QUESTION = 'QUESTION',
+  OVERVIEW = 'OVERVIEW',
 }

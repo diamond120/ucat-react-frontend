@@ -65,6 +65,12 @@ export type StartSessionParams = {
   package_id: number;
 };
 
+export type EndSessionResponse = SessionsState['current_session'];
+
+export type EndSessionParams = {
+  session_id: string;
+};
+
 export type GetSessionResponse = SessionsState['current_session'];
 
 export type GetSessionParams = {

@@ -59,6 +59,8 @@ export const Footer = ({ sectionType, onSectionChange, onQuestionChange }: Foote
     }
   };
 
+  if (sectionType === SessionSectionType.OVERVIEW) return null;
+
   return (
     <>
       <div className="footer__container">
@@ -74,6 +76,7 @@ export const Footer = ({ sectionType, onSectionChange, onQuestionChange }: Foote
             </div>
           )}
         </div>
+
         <div className="footer__buttons">
           {prevQuestionId && (
             <div className="footer__button-left">

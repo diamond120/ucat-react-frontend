@@ -4,7 +4,7 @@ import * as selectors from 'features/sessions/selectors';
 import './_package-instruction.scss';
 
 export const PackageInstruction = () => {
-  const { package: currentPackage } = useSelector(selectors.selectCurrentSession);
+  const currentPackage = useSelector(selectors.selectCurrentPackage);
 
   return (
     <div className="package-instruction__container">

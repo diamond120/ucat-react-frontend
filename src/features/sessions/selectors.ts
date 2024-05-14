@@ -26,7 +26,7 @@ export const selectPrevSection = createSelector([selectCurrentSession], (session
   return null; // No previous section if current is the first or not found
 });
 
-export const selectNextSection = createSelector([selectCurrentSession], (session): Section | null => {
+export const selectNextSection = createSelector([selectCurrentSection, selectCurrentSession], (section, session) => {
   if (!session?.sections?.length) {
     return null;
   }
@@ -38,7 +38,7 @@ export const selectNextSection = createSelector([selectCurrentSession], (session
   }
 
   // Return the first section if no current section is set
-  return session.sections?.[0] ?? null;
+  return section ? null : session.sections?.[0] ?? null;
 });
 
 export const selectCurrentQuestionResponse = (state: RootState): QuestionResponse | null =>

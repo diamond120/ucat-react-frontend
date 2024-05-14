@@ -1,0 +1,68 @@
+.overview-section {
+    &__container {
+        padding: 1rem;
+        font-family: arial;
+    }
+
+    &__header {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        
+        > h5 {
+            font-family: arial;
+            font-size: 1rem;
+        }
+    }
+
+    &__content {
+        > * {
+            font-size: 0.9rem;
+        }
+
+        > h6 {
+            font-size: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        > p {
+            padding-bottom: 1rem;
+        }
+    }
+
+    &__table {
+        margin: 2rem;
+
+        > thead > tr > th {
+            padding-bottom: 1rem;
+
+            &:first-child {
+                text-align: left;
+            }
+        }
+
+        &-row {
+            > td {
+                min-width: 10rem;
+                text-align: center;
+
+                &:first-child {
+                    min-width: 12rem;
+                    padding: 0.5rem 0;
+                    font-weight: bold;
+                    text-align: left;
+                }
+            }
+
+            &--link {
+                text-decoration: underline;
+                cursor: pointer;
+
+                &:hover {
+                    color: #006DAA;
+                }
+            }
+        }
+    }
+}
