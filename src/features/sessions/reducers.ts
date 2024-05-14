@@ -1,6 +1,6 @@
 import type { SessionsState } from './types';
 
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { sessionsApi } from './api';
 
 const INITIAL_STATE: SessionsState = {
@@ -22,7 +22,12 @@ const sessionsSlice = createSlice({
   name: 'sessions',
   initialState: INITIAL_STATE,
   reducers: {
-    // Define any reducers here if needed in the future
+    updateSectionId(state, action: PayloadAction<number | null>) {
+      state.current_session.section_id = action.payload;
+    },
+    updateQuestionId(state, action: PayloadAction<number | null>) {
+      state.current_session.question_id = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder.addMatcher(sessionsApi.endpoints.startSession.matchFulfilled, (state, { payload }) => {
@@ -50,4 +55,5 @@ const sessionsSlice = createSlice({
   },
 });
 
+export const { updateSectionId, updateQuestionId } = sessionsSlice.actions;
 export default sessionsSlice.reducer;

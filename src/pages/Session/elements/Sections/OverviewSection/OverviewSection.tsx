@@ -3,14 +3,18 @@ import type { Section } from 'features/sessions/types';
 
 import React from 'react';
 import { useSelector } from 'react-redux';
+import { useAppDispatch } from 'store';
+import { updateSectionId } from 'features/sessions/reducers';
 import * as selectors from 'features/sessions/selectors';
 import './_overview-section.scss';
 
-export const OverviewSection = ({ onSectionChange }: OverviewSectionProps) => {
+export const OverviewSection = ({ onQuestionChange }: OverviewSectionProps) => {
+  const dispatch = useAppDispatch();
   const { sections } = useSelector(selectors.selectCurrentSession);
 
-  const navigateToSection = (sectionId: Section['id']) => () => {
-    onSectionChange(sectionId);
+  const navigateToSection = (section: Section) => () => {
+    dispatch(updateSectionId(section.id));
+    onQuestionChange(section.questions[0].id);
   };
 
   return (
@@ -45,7 +49,7 @@ export const OverviewSection = ({ onSectionChange }: OverviewSectionProps) => {
             {sections.map((section) => (
               <tr key={section.id} className="overview-section__table-row">
                 <td>
-                  <a onClick={navigateToSection(section.id)} className="overview-section__table-row--link">
+                  <a onClick={navigateToSection(section)} className="overview-section__table-row--link">
                     {section.name}
                   </a>
                 </td>

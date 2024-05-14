@@ -1,5 +1,5 @@
-import type { Section } from 'features/sessions/types';
+import type { Question } from 'features/sessions/types';
 
 export type OverviewSectionProps = {
-  onSectionChange: (sectionId: Section['id'] | null) => void;
+  onQuestionChange: (questionId: Question['id'] | null) => void;
 };

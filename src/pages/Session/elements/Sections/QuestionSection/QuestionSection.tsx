@@ -85,7 +85,6 @@ export const QuestionSection = ({ sessionId, questionId }: QuestionSectionProps)
           )}
         </div>
       </div>
-      {/* {isAnsweringQuestion && <Loading />} */}
     </div>
   );
 };
