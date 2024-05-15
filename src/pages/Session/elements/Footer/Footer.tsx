@@ -17,6 +17,7 @@ export const Footer = ({ sectionType, isSessionCompleted, onSectionChange, onQue
   const nextSection = useSelector(selectors.selectNextSection);
   const prevQuestionId = useSelector(selectors.selectPrevQuestionId);
   const nextQuestionId = useSelector(selectors.selectNextQuestionId);
+  const isQuestionResponseLoading = useSelector(selectors.selectIsQuestionResponseLoading);
 
   const [isBeginExamModalOpen, setIsBeginExamModalOpen] = useState<boolean>(false);
   const [isEndExamModalOpen, setIsEndExamModalOpen] = useState<boolean>(false);
@@ -88,17 +89,21 @@ export const Footer = ({ sectionType, isSessionCompleted, onSectionChange, onQue
         <div className="footer__buttons">
           {prevQuestionId && (
             <div className="footer__button-left">
-              <FooterButton type="prev" onClick={navigatePrev} />
+              <FooterButton type="prev" onClick={navigatePrev} isDisabled={isQuestionResponseLoading} />
             </div>
           )}
-          {sectionType === SessionSectionType.QUESTION && currentSection && (
+          {sectionType === SessionSectionType.QUESTION && currentSection && !isSessionCompleted && (
             <div className="footer__button-left">
-              <FooterButton type="navigator" onClick={toggleNavigatorModal(true)} />
+              <FooterButton
+                type="navigator"
+                onClick={toggleNavigatorModal(true)}
+                isDisabled={isQuestionResponseLoading}
+              />
             </div>
           )}
           {(sectionType === SessionSectionType.PACKAGE_INSTRUCTION || nextQuestionId) && (
             <div className="footer__button-left">
-              <FooterButton type="next" onClick={navigateNext} />
+              <FooterButton type="next" onClick={navigateNext} isDisabled={isQuestionResponseLoading} />
             </div>
           )}
         </div>

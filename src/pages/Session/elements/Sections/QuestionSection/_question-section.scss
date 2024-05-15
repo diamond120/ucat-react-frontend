@@ -50,5 +50,11 @@
 
     &__question {
         padding: 1.25rem;
+
+        &--explanation {
+            margin: 2rem 1rem;
+            border-top: 1px solid rgb(187, 187, 187, 0.6);
+            line-height: 1.25rem;
+        }
     }
 }

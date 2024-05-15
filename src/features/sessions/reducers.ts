@@ -16,6 +16,7 @@ const INITIAL_STATE: SessionsState = {
     remaining_time: 0,
   },
   current_question_response: null,
+  isLoadingQuestionResponse: false,
 };
 
 const sessionsSlice = createSlice({
@@ -36,9 +37,16 @@ const sessionsSlice = createSlice({
     builder.addMatcher(sessionsApi.endpoints.getSession.matchFulfilled, (state, { payload, meta }) => {
       state.current_session = { ...payload, id: meta.arg.originalArgs.session_id };
     });
+    builder.addMatcher(sessionsApi.endpoints.getQuestionResponse.matchPending, (state) => {
+      state.isLoadingQuestionResponse = true;
+    });
     builder.addMatcher(sessionsApi.endpoints.getQuestionResponse.matchFulfilled, (state, { payload }) => {
       state.current_session = { ...state.current_session, question_id: payload.question_id };
       state.current_question_response = { ...payload };
+      state.isLoadingQuestionResponse = false;
+    });
+    builder.addMatcher(sessionsApi.endpoints.getQuestionResponse.matchRejected, (state) => {
+      state.isLoadingQuestionResponse = false;
     });
     builder.addMatcher(sessionsApi.endpoints.putQuestionResponse.matchFulfilled, (state, { payload }) => {
       if (state.current_question_response) {

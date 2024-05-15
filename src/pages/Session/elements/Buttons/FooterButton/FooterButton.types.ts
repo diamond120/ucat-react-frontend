@@ -3,4 +3,5 @@ export type FooterButtonTypes = 'prev' | 'next' | 'navigator' | 'end_exam' | 'en
 export type FooterButtonProps = {
   type: FooterButtonTypes;
   onClick?: () => void;
+  isDisabled?: boolean;
 };

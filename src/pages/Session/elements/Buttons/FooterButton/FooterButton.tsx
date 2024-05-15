@@ -5,7 +5,7 @@ import classNames from 'classnames';
 import * as constants from './FooterButton.constants';
 import './_footer-button.scss';
 
-export const FooterButton = ({ type, onClick }: FooterButtonProps) => {
+export const FooterButton = ({ type, onClick, isDisabled }: FooterButtonProps) => {
   return (
     <button
       className={classNames({
@@ -16,6 +16,7 @@ export const FooterButton = ({ type, onClick }: FooterButtonProps) => {
         'footer-button__end': type === 'end_exam' || type === 'end_section' || type === 'return_overview',
       })}
       onClick={onClick}
+      disabled={isDisabled}
     >
       {constants.FOOTER_BUTTON_LABELS[type]}
     </button>

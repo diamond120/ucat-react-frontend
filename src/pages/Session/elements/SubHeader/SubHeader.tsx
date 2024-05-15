@@ -32,22 +32,26 @@ export const SubHeader = ({ sectionType, isSessionCompleted }: SubHeaderProps) =
   return (
     <React.Fragment>
       <div className="sub-header__container">
-        <div className="sub-header__buttons">
-          {isSessionCompleted && sectionType === SessionSectionType.QUESTION && (
-            <SubHeaderButton type="answer" onClick={handleExplainModalToggle(true)} />
-          )}
+        {!isSessionCompleted && (
+          <React.Fragment>
+            <div className="sub-header__buttons">
+              {isSessionCompleted && sectionType === SessionSectionType.QUESTION && (
+                <SubHeaderButton type="answer" onClick={handleExplainModalToggle(true)} />
+              )}
 
-          {currentSection && <SubHeaderButton type="calculator" onClick={handleCalculatorModalModalToggle(true)} />}
-        </div>
+              {currentSection && <SubHeaderButton type="calculator" onClick={handleCalculatorModalModalToggle(true)} />}
+            </div>
 
-        {sectionType === SessionSectionType.QUESTION && currentQuestionResponse && (
-          <div className="sub-header__buttons">
-            <SubHeaderButton
-              type="flag"
-              flagged={Boolean(currentQuestionResponse?.flagged)}
-              onClick={handleQuestionFlagging}
-            />
-          </div>
+            {sectionType === SessionSectionType.QUESTION && currentQuestionResponse && (
+              <div className="sub-header__buttons">
+                <SubHeaderButton
+                  type="flag"
+                  flagged={Boolean(currentQuestionResponse?.flagged)}
+                  onClick={handleQuestionFlagging}
+                />
+              </div>
+            )}
+          </React.Fragment>
         )}
       </div>
 

@@ -54,6 +54,7 @@ export type Session = {
 export type SessionsState = {
   current_session: Session;
   current_question_response: QuestionResponse | null;
+  isLoadingQuestionResponse: boolean;
 };
 
 export type StartSessionResponse = {

@@ -44,6 +44,8 @@ export const selectNextSection = createSelector([selectCurrentSection, selectCur
 export const selectCurrentQuestionResponse = (state: RootState): QuestionResponse | null =>
   state.sessions.current_question_response;
 
+export const selectIsQuestionResponseLoading = (state: RootState): boolean => state.sessions.isLoadingQuestionResponse;
+
 export const selectCurrentSessionId = createSelector([selectCurrentSession], (session) => session.id);
 
 export const selectCurrentPackage = createSelector([selectCurrentSession], (session) => session.package);

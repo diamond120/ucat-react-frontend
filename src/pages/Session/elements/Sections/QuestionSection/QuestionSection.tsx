@@ -87,6 +87,13 @@ export const QuestionSection = ({ sessionId, questionId, isSessionCompleted }: Q
               onChange={submitResponse}
             />
           )}
+
+          {isSessionCompleted && (
+            <div className="question-section__question--explanation">
+              <h5>Why?</h5>
+              <p dangerouslySetInnerHTML={{ __html: currentQuestionResponse.question.explanation ?? '' }} />
+            </div>
+          )}
         </div>
       </div>
     </div>
