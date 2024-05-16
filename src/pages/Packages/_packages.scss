@@ -1,11 +1,11 @@
-.home {
+.packages {
     &__container {
         max-width: 70rem;
         margin: 3rem auto;
         padding: 3rem;
     }
 
-    &__qb-content, &__pt-content {
+    &__pt-content {
         display: flex;
         margin-bottom: 3rem;
 
@@ -13,12 +13,6 @@
             padding: 3rem;
             flex: 50%;
         }
-    }
-
-    &__qb-comment {
-        background: #38364D;
-        color: #fff;
-        line-height: 1.75rem;
     }
 
     &__pt-comment {

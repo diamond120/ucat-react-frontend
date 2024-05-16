@@ -41,7 +41,7 @@ export const OverviewSection = ({ onQuestionChange }: OverviewSectionProps) => {
                 Correct <br /> Answers
               </th>
               <th>
-                Patially Correct <br /> Answers
+                Partially Correct <br /> Answers
               </th>
               <th>
                 Incorrect <br /> Answers
