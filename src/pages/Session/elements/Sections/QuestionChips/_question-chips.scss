@@ -1,0 +1,63 @@
+.question-chips {
+    &__container {
+        display: flex;
+        align-items: first baseline;
+        gap: 2rem;
+        margin-top: -3px;
+        padding: 1rem;
+        border-top: 7px solid #006DAA;
+
+        > h5 {
+            margin: 0;
+        }
+    }
+
+    &__content {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+    }
+
+    &__chip {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 3px;
+        padding: 0 1rem;
+        height: 35px;
+        font-weight: bold;
+        font-size: 0.85rem;
+        line-height: 1rem;
+        border-radius: 5px;
+        color: #000000;
+        text-shadow: 2px 2px 2px #ffffff, 0 0 1em #ffffff, 0 0 0.2em #ffffff;
+
+        &--current {
+            outline: 3px solid #000000;
+        }
+
+        &--correct {
+            background-color: rgba($color: #4CAF50, $alpha: 0.55);
+
+            &.question-chips__chip--current {
+                background-color: rgba($color: #4CAF50, $alpha: 1);
+            }
+        }
+
+        &--incorrect {
+            background-color: rgba($color: #F44336, $alpha: 0.55);
+
+            &.question-chips__chip--current {
+                background-color: rgba($color: #F44336, $alpha: 1);
+            }
+        }
+
+        &--partially-correct {
+            background-color: rgba($color: #FFC107, $alpha: 0.55);
+
+            &.question-chips__chip--current {
+                background-color: rgba($color: #FFC107, $alpha: 1);
+            }
+        }
+    }
+}

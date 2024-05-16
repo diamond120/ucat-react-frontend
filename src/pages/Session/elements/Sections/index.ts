@@ -3,3 +3,4 @@ export * from './SectionInstruction';
 export * from './QuestionSection';
 export * from './OverviewSection';
 export * from './Navigator';
+export * from './QuestionChips';

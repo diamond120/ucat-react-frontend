@@ -14,6 +14,7 @@ import {
   SubHeader,
   Footer,
   QuestionSection,
+  QuestionChips,
   PackageInstruction,
   SectionInstruction,
   OverviewSection,
@@ -95,11 +96,14 @@ export const Session = () => {
         return currentSession.section_id ? <SectionInstruction sectionId={currentSession.section_id} /> : null;
       case SessionSectionType.QUESTION:
         return currentSession.question_id ? (
-          <QuestionSection
-            sessionId={session_id}
-            questionId={currentSession.question_id}
-            isSessionCompleted={Boolean(currentSession.completed)}
-          />
+          <>
+            <QuestionSection
+              sessionId={session_id}
+              questionId={currentSession.question_id}
+              isSessionCompleted={Boolean(currentSession.completed)}
+            />
+            {Boolean(currentSession.completed) && <QuestionChips onQuestionChange={handleQuestionChange} />}
+          </>
         ) : null;
       case SessionSectionType.OVERVIEW:
         return <OverviewSection onQuestionChange={handleQuestionChange} />;
