@@ -1,12 +1,18 @@
 import type { DragAndDropOptionsProps, DragItem } from './DragAndDropOptions.types';
 
 import React, { useMemo, useCallback } from 'react';
+import classNames from 'classnames';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { Answer, DropArea } from './elements';
 import './_drag-and-drop-options.scss';
 
-export const DragAndDropOptions = ({ question, value: selectedValue, onChange }: DragAndDropOptionsProps) => {
+export const DragAndDropOptions = ({
+  question,
+  value: selectedValue,
+  shouldHideSelectedOption,
+  onChange,
+}: DragAndDropOptionsProps) => {
   const dragAndDropOptions = useMemo(() => {
     try {
       const optionLabels = JSON.parse(question.options || '[]') as string[];
@@ -20,6 +26,14 @@ export const DragAndDropOptions = ({ question, value: selectedValue, onChange }:
       return [];
     }
   }, [question.options, selectedValue]);
+
+  const dragAndDropValues = useMemo(() => {
+    try {
+      return JSON.parse(question.actions || '["Yes", "No"]') as string[];
+    } catch (error) {
+      return [];
+    }
+  }, [question.actions]);
 
   const handleDrop = useCallback(
     (item: DragItem, index: number) => {
@@ -46,7 +60,12 @@ export const DragAndDropOptions = ({ question, value: selectedValue, onChange }:
 
   return (
     <DndProvider backend={HTML5Backend}>
-      <div className="drag_and_drop_options__container">
+      <div
+        className={classNames({
+          drag_and_drop_options__container: true,
+          'drag_and_drop_options__container-is--long': Boolean(question.actions?.length),
+        })}
+      >
         <div className="drag_and_drop_options__questions">
           {dragAndDropOptions.map((option, index) => (
             <div className="drag_and_drop_options__questions-item" key={index}>
@@ -61,8 +80,12 @@ export const DragAndDropOptions = ({ question, value: selectedValue, onChange }:
         </div>
 
         <div className="drag_and_drop_options__answers">
-          {['Yes', 'No'].map((text) => (
-            <Answer key={text} text={text} />
+          {dragAndDropValues.map((text) => (
+            <Answer
+              key={text}
+              text={text}
+              hidden={shouldHideSelectedOption && dragAndDropOptions.some(({ value }) => value === text)}
+            />
           ))}
         </div>
       </div>

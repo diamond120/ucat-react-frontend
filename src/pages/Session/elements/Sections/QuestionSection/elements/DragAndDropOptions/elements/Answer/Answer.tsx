@@ -7,7 +7,7 @@ import classNames from 'classnames';
 import * as constants from '../../DragAndDrop.constants';
 import './_answer.scss';
 
-export const Answer = ({ id, text, onEnd }: AnswerProps) => {
+export const Answer = ({ id, text, hidden, onEnd }: AnswerProps) => {
   const [{ isDragging }, drag] = useDrag<DragItem, void, { isDragging: boolean }>(
     () => ({
       type: constants.DragDropTypes.ANSWER,
@@ -26,7 +26,10 @@ export const Answer = ({ id, text, onEnd }: AnswerProps) => {
   );
 
   return (
-    <div className={classNames('answer', { 'answer__is-dragging': isDragging })} ref={drag}>
+    <div
+      className={classNames('answer', { 'answer__is-dragging': isDragging, 'answer__is-hidden': hidden })}
+      ref={drag}
+    >
       {text}
     </div>
   );

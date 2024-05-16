@@ -28,8 +28,8 @@ export const RadioOptions = ({ question, value: selectedValue, onChange }: Radio
               type="radio"
               name="options"
               value={value}
-              checked={value === selectedValue}
-              onChange={() => onChange(value)}
+              checked={value === JSON.parse(selectedValue)}
+              onChange={() => onChange(JSON.stringify(value))}
               aria-labelledby={`optionLabel${index}`}
             />
             {value}.{' '}

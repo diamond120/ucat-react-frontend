@@ -5,6 +5,7 @@ export type Question = {
   type: 'MC' | 'DD';
   text: string | null;
   image_url: string | null;
+  actions: string | null;
   options: string;
   option_image_urls: string | string;
   explanation: string;

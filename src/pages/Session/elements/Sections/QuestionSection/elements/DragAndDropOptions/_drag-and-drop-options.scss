@@ -3,7 +3,25 @@
         display: flex;
         align-items: center;
         gap: 3rem;
+        width: max-content;
         margin: 1.5rem 0.5rem;
+
+        &-is--long {
+            flex-direction: column;
+            align-items: flex-start;
+
+            .answer, .drop-area {
+                width: 600px;
+            }
+
+            .drag_and_drop_options__answers {
+                margin: auto;
+            }
+
+            .drag_and_drop_options__questions-item--label {
+                width: 180px;
+            }
+        }
     }
 
     &__questions {
@@ -21,8 +39,9 @@
                 display: flex;
                 justify-content: center;
                 align-items: center;
+                text-align: center;
                 width: 420px;
-                padding: 1rem;
+                padding: 1rem 0.5rem;
                 border: 1px solid #000000;
             }
         }
