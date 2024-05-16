@@ -10,16 +10,18 @@ import './_drag-and-drop-options.scss';
 export const DragAndDropOptions = ({
   question,
   value: selectedValue,
-  shouldHideSelectedOption,
+  isSessionCompleted,
   onChange,
 }: DragAndDropOptionsProps) => {
   const dragAndDropOptions = useMemo(() => {
     try {
       const optionLabels = JSON.parse(question.options || '[]') as string[];
+      const answers = JSON.parse(question.answer || '[]') as string[];
       const values = JSON.parse(selectedValue || '[]') as (string | null)[];
 
       return optionLabels.map((optionLabel, index) => ({
         label: optionLabel,
+        answer: answers[index] ?? null,
         value: values[index] ?? null,
       }));
     } catch (error) {
@@ -75,6 +77,16 @@ export const DragAndDropOptions = ({
                   {option.value && <Answer id={index} text={option.value} onEnd={handleDropOut} />}
                 </DropArea>
               </div>
+              {isSessionCompleted && (
+                <span
+                  className={classNames({
+                    'drag_and_drop_options__questions-item--feedback': true,
+                    'drag_and_drop_options__questions-item--feedback-correct': option.answer === option.value,
+                  })}
+                >
+                  {option.answer === option.value ? 'Correct answer' : 'Incorrect answer'}
+                </span>
+              )}
             </div>
           ))}
         </div>
@@ -84,7 +96,7 @@ export const DragAndDropOptions = ({
             <Answer
               key={text}
               text={text}
-              hidden={shouldHideSelectedOption && dragAndDropOptions.some(({ value }) => value === text)}
+              hidden={Boolean(question.actions?.length) && dragAndDropOptions.some(({ value }) => value === text)}
             />
           ))}
         </div>

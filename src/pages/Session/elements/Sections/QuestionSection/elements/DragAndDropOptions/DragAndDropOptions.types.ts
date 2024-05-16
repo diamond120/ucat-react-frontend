@@ -4,7 +4,7 @@ export type DragAndDropOptionsProps = {
   question: Question;
   value: QuestionResponse['value'];
   onChange: (value: QuestionResponse['value']) => void;
-  shouldHideSelectedOption?: boolean;
+  isSessionCompleted: boolean;
 };
 
 export type DragItem = {

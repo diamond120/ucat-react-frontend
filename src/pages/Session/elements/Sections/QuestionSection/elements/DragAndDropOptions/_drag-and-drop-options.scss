@@ -44,6 +44,21 @@
                 padding: 1rem 0.5rem;
                 border: 1px solid #000000;
             }
+
+            &--feedback {
+                display: inline-block;
+                padding: 3px 5px;
+                min-width: 85px;
+                text-align: center;
+                color: #FFFFFF;
+                font-size: 0.75rem;
+                background-color: #FF5252;
+                border-radius: 4px;
+
+                &-correct {
+                    background-color: #4CAF50;
+                }
+            }
         }
     }
 

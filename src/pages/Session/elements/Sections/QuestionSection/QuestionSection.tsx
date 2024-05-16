@@ -76,6 +76,7 @@ export const QuestionSection = ({ sessionId, questionId, isSessionCompleted }: Q
             <RadioOptions
               question={currentQuestionResponse.question}
               value={currentQuestionResponse.value}
+              isSessionCompleted={isSessionCompleted}
               onChange={submitResponse}
             />
           )}
@@ -84,7 +85,7 @@ export const QuestionSection = ({ sessionId, questionId, isSessionCompleted }: Q
             <DragAndDropOptions
               question={currentQuestionResponse.question}
               value={currentQuestionResponse.value}
-              shouldHideSelectedOption={Boolean(currentQuestionResponse.question.actions?.length)}
+              isSessionCompleted={isSessionCompleted}
               onChange={submitResponse}
             />
           )}

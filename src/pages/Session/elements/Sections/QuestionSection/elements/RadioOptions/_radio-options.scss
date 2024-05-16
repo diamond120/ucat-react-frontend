@@ -16,5 +16,31 @@
         &--label {
             margin-left: 2rem;
         }
+        
+
+        &-feedback {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            margin-left: 1rem;
+
+            > span {
+                display: inline-block;
+                padding: 3px 5px;
+                min-width: 85px;
+                text-align: center;
+                color: #FFFFFF;
+                font-size: 0.75rem;
+                border-radius: 4px;
+            }
+
+            &--correct{
+                background-color: #4CAF50;
+            }
+
+            &--yours {
+                background-color: #00BCD4;
+            }
+        }
     }
 }

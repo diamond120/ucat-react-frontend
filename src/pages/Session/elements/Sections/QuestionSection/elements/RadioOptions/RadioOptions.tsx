@@ -3,7 +3,7 @@ import type { RadioOptionsProps } from './RadioOptions.types';
 import React, { useMemo } from 'react';
 import './_radio-options.scss';
 
-export const RadioOptions = ({ question, value: selectedValue, onChange }: RadioOptionsProps) => {
+export const RadioOptions = ({ question, value: selectedValue, isSessionCompleted, onChange }: RadioOptionsProps) => {
   const radioOptions = useMemo(() => {
     try {
       const optionLabels = JSON.parse(question.options || '[]') as string[];
@@ -37,6 +37,16 @@ export const RadioOptions = ({ question, value: selectedValue, onChange }: Radio
               {label}
             </span>
             {image && <img src={image} alt="" aria-hidden="true" />}
+            {isSessionCompleted && (
+              <div className="radio_options__item-feedback">
+                {JSON.parse(question.answer) === value && (
+                  <span className="radio_options__item-feedback--correct">Correct answer</span>
+                )}
+                {JSON.parse(selectedValue) === value && (
+                  <span className="radio_options__item-feedback--yours">Your answer</span>
+                )}
+              </div>
+            )}
           </label>
         </div>
       ))}
