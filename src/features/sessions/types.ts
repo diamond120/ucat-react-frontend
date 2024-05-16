@@ -19,6 +19,8 @@ export type Section = {
   name: string;
   type: 'VR' | 'DM' | 'QR' | 'AR' | 'SJ';
   questions: (Pick<Question, 'id' | 'status'> & Pick<QuestionResponse, 'flagged'>)[];
+  correct: number;
+  partially_correct: number;
   time: number;
 };
 

@@ -41,6 +41,12 @@ export const OverviewSection = ({ onQuestionChange }: OverviewSectionProps) => {
                 Correct <br /> Answers
               </th>
               <th>
+                Patially Correct <br /> Answers
+              </th>
+              <th>
+                Incorrect <br /> Answers
+              </th>
+              <th>
                 Number of <br /> Questions
               </th>
             </tr>
@@ -53,7 +59,9 @@ export const OverviewSection = ({ onQuestionChange }: OverviewSectionProps) => {
                     {section.name}
                   </a>
                 </td>
-                <td>0</td>
+                <td>{section.correct}</td>
+                <td>{section.partially_correct}</td>
+                <td>{section.questions.length - section.correct - section.partially_correct}</td>
                 <td>{section.questions.length}</td>
               </tr>
             ))}
