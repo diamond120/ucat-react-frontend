@@ -21,15 +21,22 @@
         line-height: 1.75rem;
     }
 
-    &__session-link--container {
+    &__session-links {
         display: flex;
         flex-direction: column;
+        gap: 3rem;
+        padding-top: 0 !important;
 
-        > a {
-            padding: 0.5rem;
-            color: #53A5AB;
-            text-decoration: underline;
-            cursor: pointer;
+        &--content {
+            display: flex;
+            flex-direction: column;
+    
+            > a {
+                padding: 0.5rem;
+                color: #53A5AB;
+                text-decoration: underline;
+                cursor: pointer;
+            }
         }
     }
 }

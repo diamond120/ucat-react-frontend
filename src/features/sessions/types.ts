@@ -53,6 +53,7 @@ export type Session = {
   package: Package | null;
   sections: Section[];
   remaining_time: number;
+  redirect_url: string | null;
 };
 
 export type SessionsState = {
@@ -68,6 +69,7 @@ export type StartSessionResponse = {
 export type StartSessionParams = {
   user_id: number;
   package_id: number;
+  redirect_url?: string;
 };
 
 export type EndSessionResponse = SessionsState['current_session'];

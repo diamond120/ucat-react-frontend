@@ -14,6 +14,7 @@ const INITIAL_STATE: SessionsState = {
     package: null,
     sections: [],
     remaining_time: 0,
+    redirect_url: null,
   },
   current_question_response: null,
   isLoadingQuestionResponse: false,

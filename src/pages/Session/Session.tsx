@@ -107,17 +107,20 @@ export const Session = () => {
       try {
         if (sectionId) {
           await navigateToSection({ session_id, section_id: sectionId }).unwrap();
+          refetchSession();
         } else {
           await endSession({ session_id }).unwrap();
+          if (currentSession.redirect_url) {
+            window.location.href = currentSession.redirect_url;
+          } else {
+            refetchSession();
+          }
         }
-
-        refetchSession();
       } catch (error) {
         console.error('Error handling section change:', error);
-        // Handle error appropriately
       }
     },
-    [session_id, navigateToSection, endSession, refetchSession],
+    [session_id, currentSession.redirect_url, navigateToSection, endSession, refetchSession],
   );
 
   const sectionType = useMemo(() => {

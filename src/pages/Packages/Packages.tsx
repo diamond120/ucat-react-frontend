@@ -1,4 +1,5 @@
 import type { Package } from 'features/packages/types';
+import type { StartSessionParams } from 'features/sessions/types';
 
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -24,9 +25,17 @@ export const Packages = () => {
     }
   }, [isSuccessSession, sessionData?.id]);
 
-  const handleStartSession = (packageId: Package['id']) => () => {
-    startSession({ user_id: variables.USER_ID, package_id: packageId });
-  };
+  const handleStartSession =
+    (packageId: Package['id'], isSelfSession: boolean = false) =>
+    () => {
+      const params: StartSessionParams = { user_id: variables.TEST_USER_ID, package_id: packageId };
+
+      if (isSelfSession) {
+        params.redirect_url = variables.TEST_REDIRECT_URL;
+      }
+
+      startSession(params);
+    };
 
   if (isFetchingPackages) {
     return <Loading />;
@@ -38,14 +47,27 @@ export const Packages = () => {
         <div className="packages__pt-comment">
           <PTComment />
         </div>
-        <div className="packages__session-link--container">
-          {packages
-            .filter(({ type }) => type === 'Practice Test')
-            .map(({ id, name }) => (
-              <a key={id} onClick={handleStartSession(id)}>
-                {name}
-              </a>
-            ))}
+        <div className="packages__session-links">
+          <div className="packages__session-links--content">
+            <h3>Official</h3>
+            {packages
+              .filter(({ type }) => type === 'Practice Test')
+              .map(({ id, name }) => (
+                <a key={id} onClick={handleStartSession(id)}>
+                  {name}
+                </a>
+              ))}
+          </div>
+          <div className="packages__session-links--content">
+            <h3>Self</h3>
+            {packages
+              .filter(({ type }) => type === 'Practice Test')
+              .map(({ id, name }) => (
+                <a key={id} onClick={handleStartSession(id, true)}>
+                  {name}
+                </a>
+              ))}
+          </div>
         </div>
       </div>
 

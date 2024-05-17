@@ -23,7 +23,7 @@ export const sessionsApi = createApi({
   }),
   endpoints: (builder) => ({
     startSession: builder.mutation<StartSessionResponse, StartSessionParams>({
-      query: ({ user_id, package_id }) => ({ url: '', method: 'POST', body: { user_id, package_id } }),
+      query: (params) => ({ url: '', method: 'POST', body: params }),
     }),
     getSession: builder.query<GetSessionResponse, GetSessionParams>({
       query: ({ session_id }) => ({ url: `/${session_id}` }),
