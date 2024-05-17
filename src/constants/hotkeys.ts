@@ -1,0 +1,13 @@
+export const NEXT = 'alt+n';
+export const PREV = 'alt+p';
+export const NAVIGATOR = 'alt+v';
+export const ANSWER = 'alt+x';
+export const CALCULATOR = 'alt+c';
+export const FLAG = 'alt+f';
+export const YES = 'alt+y';
+export const NO = 'alt+n';
+export const OK = 'alt+o';
+export const CLOSE = 'alt+c';
+export const END_EXAM = 'alt+e';
+export const END_SECTION = 'alt+e';
+export const RETURN_OVERVIEW = 'alt+r';

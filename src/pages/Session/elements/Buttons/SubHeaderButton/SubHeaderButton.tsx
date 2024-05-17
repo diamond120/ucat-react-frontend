@@ -1,11 +1,22 @@
 import type { SubHeaderButtonProps } from './SubHeaderButton.types';
 
 import React from 'react';
+import { useHotkeys } from 'react-hotkeys-hook';
 import classNames from 'classnames';
 import * as constants from './SubHeaderButton.constants';
 import './_sub-header-button.scss';
 
-export const SubHeaderButton = ({ type, flagged, onClick }: SubHeaderButtonProps) => {
+export const SubHeaderButton = ({ type, flagged, isHotkeyDisabled, onClick }: SubHeaderButtonProps) => {
+  useHotkeys(
+    constants.SUB_HEADER_BUTTON_HOTKEYS[type],
+    () => onClick?.(),
+    {
+      preventDefault: true,
+      enabled: !isHotkeyDisabled,
+    },
+    [onClick],
+  ) as React.RefObject<HTMLButtonElement>;
+
   return (
     <button
       className={classNames({
@@ -16,8 +27,7 @@ export const SubHeaderButton = ({ type, flagged, onClick }: SubHeaderButtonProps
         'sub-header-button__flag--is-flagged': type === 'flag' && flagged,
       })}
       onClick={onClick}
-    >
-      {constants.SUB_HEADER_BUTTON_LABELS[type]}
-    </button>
+      dangerouslySetInnerHTML={{ __html: constants.SUB_HEADER_BUTTON_HTMLS[type] }}
+    ></button>
   );
 };

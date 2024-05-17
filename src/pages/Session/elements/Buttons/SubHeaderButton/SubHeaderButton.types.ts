@@ -4,4 +4,5 @@ export type SubHeaderButtonProps = {
   type: SubHeaderButtonTypes;
   flagged?: boolean;
   onClick?: () => void;
+  isHotkeyDisabled?: boolean;
 };

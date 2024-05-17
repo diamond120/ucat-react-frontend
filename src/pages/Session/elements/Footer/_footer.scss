@@ -30,17 +30,3 @@
         border-right: 2px solid #FFFFFF;
     }
 }
-
-.navigator__modal {
-
-    min-width: 40rem;
-    .modal__content {
-        padding: 0 3px;
-        pointer-events: visible;
-    }
-
-    .modal__footer {
-        margin-top: 2rem;
-        justify-content: end;
-    }
-}

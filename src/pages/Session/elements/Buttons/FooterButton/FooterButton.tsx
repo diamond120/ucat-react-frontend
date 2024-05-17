@@ -1,11 +1,22 @@
 import type { FooterButtonProps } from './FooterButton.types';
 
 import React from 'react';
+import { useHotkeys } from 'react-hotkeys-hook';
 import classNames from 'classnames';
 import * as constants from './FooterButton.constants';
 import './_footer-button.scss';
 
-export const FooterButton = ({ type, onClick, isDisabled }: FooterButtonProps) => {
+export const FooterButton = ({ type, onClick, isDisabled, isHotkeyDisabled }: FooterButtonProps) => {
+  useHotkeys(
+    constants.FOOTER_BUTTON_HOTKEYS[type],
+    () => onClick?.(),
+    {
+      preventDefault: true,
+      enabled: !isDisabled && !isHotkeyDisabled,
+    },
+    [onClick],
+  );
+
   return (
     <button
       className={classNames({
@@ -17,8 +28,7 @@ export const FooterButton = ({ type, onClick, isDisabled }: FooterButtonProps) =
       })}
       onClick={onClick}
       disabled={isDisabled}
-    >
-      {constants.FOOTER_BUTTON_LABELS[type]}
-    </button>
+      dangerouslySetInnerHTML={{ __html: constants.FOOTER_BUTTON_HTMLS[type] }}
+    ></button>
   );
 };

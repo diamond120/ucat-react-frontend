@@ -18,35 +18,3 @@
         align-items: center;
     }
 }
-
-.calculator__modal {
-    min-width: unset;
-
-    .modal__content {
-        padding: 0;
-    }
-
-    .modal__footer {
-        display: none;
-    }
-}
-
-.explain__modal {
-    .modal__header {
-        border: none;
-    }
-
-    .modal__content {
-        min-width: 40rem;
-        min-height: 20rem;
-        margin: 3px;
-        padding: 1rem;
-        color: #000000;
-        text-align: left;
-        background-color: #FFFFFF;
-    }
-
-    .modal__footer {
-        display: none;
-    }
-}

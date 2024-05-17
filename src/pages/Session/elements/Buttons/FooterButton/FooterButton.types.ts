@@ -4,4 +4,5 @@ export type FooterButtonProps = {
   type: FooterButtonTypes;
   onClick?: () => void;
   isDisabled?: boolean;
+  isHotkeyDisabled: boolean;
 };
