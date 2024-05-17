@@ -26,11 +26,11 @@ export const Packages = () => {
   }, [isSuccessSession, sessionData?.id]);
 
   const handleStartSession =
-    (packageId: Package['id'], isSelfSession: boolean = false) =>
+    (packageId: Package['id'], isOfficialSession: boolean = false) =>
     () => {
       const params: StartSessionParams = { user_id: variables.TEST_USER_ID, package_id: packageId };
 
-      if (isSelfSession) {
+      if (isOfficialSession) {
         params.redirect_url = variables.TEST_REDIRECT_URL;
       }
 
@@ -53,7 +53,7 @@ export const Packages = () => {
             {packages
               .filter(({ type }) => type === 'Practice Test')
               .map(({ id, name }) => (
-                <a key={id} onClick={handleStartSession(id)}>
+                <a key={id} onClick={handleStartSession(id, true)}>
                   {name}
                 </a>
               ))}
@@ -63,7 +63,7 @@ export const Packages = () => {
             {packages
               .filter(({ type }) => type === 'Practice Test')
               .map(({ id, name }) => (
-                <a key={id} onClick={handleStartSession(id, true)}>
+                <a key={id} onClick={handleStartSession(id)}>
                   {name}
                 </a>
               ))}
