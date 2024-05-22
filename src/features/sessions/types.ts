@@ -69,6 +69,7 @@ export type StartSessionResponse = {
 export type StartSessionParams = {
   user_id: number;
   package_id: number;
+  exam_code: string;
   redirect_url?: string;
 };
 

@@ -28,7 +28,11 @@ export const Packages = () => {
   const handleStartSession =
     (packageId: Package['id'], isOfficialSession: boolean = false) =>
     () => {
-      const params: StartSessionParams = { user_id: variables.TEST_USER_ID, package_id: packageId };
+      const params: StartSessionParams = {
+        user_id: variables.TEST_USER_ID,
+        package_id: packageId,
+        exam_code: variables.TEST_EXAM_CODE,
+      };
 
       if (isOfficialSession) {
         params.redirect_url = variables.TEST_REDIRECT_URL;
