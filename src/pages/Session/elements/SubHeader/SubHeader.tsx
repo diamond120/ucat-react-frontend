@@ -16,7 +16,6 @@ export const SubHeader = ({
   onCalculatorModalToggle,
 }: SubHeaderProps) => {
   const currentQuestionResponse = useSelector(selectors.selectCurrentQuestionResponse);
-  const currentSection = useSelector(selectors.selectCurrentSection);
 
   const [answerToQuestion] = usePutQuestionResponseMutation();
 
@@ -37,7 +36,7 @@ export const SubHeader = ({
                 <SubHeaderButton type="answer" onClick={onExplainModalToggle(true)} />
               )}
 
-              {currentSection && (
+              {currentQuestionResponse && (
                 <SubHeaderButton
                   type="calculator"
                   onClick={onCalculatorModalToggle(true)}

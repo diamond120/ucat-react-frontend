@@ -11,9 +11,9 @@ export const Footer = ({
   sectionType,
   isSessionCompleted,
   isHotkeyDisabled,
-  onSectionChange,
-  onQuestionChange,
-  onBeginExamModalToggle,
+  onNavigatePrev,
+  onNavigateNext,
+  onReturnToOverview,
   onEndExamModalToggle,
   onEndSectionModalToggle,
   onNavigatorModalToggle,
@@ -22,26 +22,6 @@ export const Footer = ({
   const prevQuestionId = useSelector(selectors.selectPrevQuestionId);
   const nextQuestionId = useSelector(selectors.selectNextQuestionId);
   const isQuestionResponseLoading = useSelector(selectors.selectIsQuestionResponseLoading);
-
-  const navigatePrev = () => {
-    if (prevQuestionId) {
-      onQuestionChange(prevQuestionId);
-    }
-  };
-
-  const navigateNext = () => {
-    if (sectionType === SessionSectionType.PACKAGE_INSTRUCTION) {
-      onBeginExamModalToggle(true)();
-    } else if (nextQuestionId) {
-      onQuestionChange(nextQuestionId);
-    } else {
-      onQuestionChange(currentSection?.questions[0].id ?? null);
-    }
-  };
-
-  const returnToOverview = () => {
-    onSectionChange(null);
-  };
 
   if (sectionType === SessionSectionType.OVERVIEW) return null;
 
@@ -57,7 +37,7 @@ export const Footer = ({
           {sectionType === SessionSectionType.QUESTION && (
             <div className="footer__button-right">
               {isSessionCompleted ? (
-                <FooterButton type="return_overview" onClick={returnToOverview} isHotkeyDisabled={isHotkeyDisabled} />
+                <FooterButton type="return_overview" onClick={onReturnToOverview} isHotkeyDisabled={isHotkeyDisabled} />
               ) : (
                 <FooterButton
                   type="end_section"
@@ -74,7 +54,7 @@ export const Footer = ({
             <div className="footer__button-left">
               <FooterButton
                 type="prev"
-                onClick={navigatePrev}
+                onClick={onNavigatePrev}
                 isDisabled={isQuestionResponseLoading}
                 isHotkeyDisabled={isHotkeyDisabled}
               />
@@ -94,7 +74,7 @@ export const Footer = ({
             <div className="footer__button-left">
               <FooterButton
                 type="next"
-                onClick={navigateNext}
+                onClick={onNavigateNext}
                 isDisabled={isQuestionResponseLoading}
                 isHotkeyDisabled={isHotkeyDisabled}
               />

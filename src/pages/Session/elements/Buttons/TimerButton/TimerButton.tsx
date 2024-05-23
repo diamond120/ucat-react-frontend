@@ -5,7 +5,7 @@ import classNames from 'classnames';
 import * as constants from './TimerButton.constants';
 import './_timer-button.scss';
 
-export const TimerButton = ({ duration, warning = constants.WARNING_SECONDS, onTimeExpired }: TimerButtonProps) => {
+export const TimerButton = ({ id, duration, warning = constants.WARNING_SECONDS, onTimeExpired }: TimerButtonProps) => {
   const [timeRemaining, setTimeRemaining] = useState<number>(duration > 0 ? duration : 0);
   const [isVisibleContent, setIsVisibleContent] = useState<boolean>(true);
 
@@ -18,6 +18,10 @@ export const TimerButton = ({ duration, warning = constants.WARNING_SECONDS, onT
       return () => clearInterval(intervalId);
     }
   }, [timeRemaining]);
+
+  useEffect(() => {
+    setTimeRemaining(duration);
+  }, [id]);
 
   const buttonContent = useMemo(() => {
     if (isVisibleContent) {

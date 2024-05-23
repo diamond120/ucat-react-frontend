@@ -7,15 +7,34 @@
 
     &__content {
         > * {
-            font-size: 1rem;
+            font-size: 0.9125rem;
         }
 
-        > h6 {
-            margin-bottom: 1rem;
+        h6 {
+            margin: 1rem 0;
+            font-size: 0.9125rem;
         }
 
-        > p {
-            padding-bottom: 1rem;
+        table {
+            margin: 2rem 0;
+            border-collapse: 'collapse';
+
+            td {
+                width: 8rem;
+                text-align: center;
+
+                p {
+                    padding: 0.25rem;
+                }
+            }
+        }
+
+        p {
+            padding-bottom: 1.25rem;
+        }
+        
+        ul > li {
+            margin-bottom: 0.5rem;
         }
     }
 }

@@ -39,7 +39,15 @@ export const Session = () => {
 
   const currentSession = useSelector(selectors.selectCurrentSession);
   const currentQuestionResponse = useSelector(selectors.selectCurrentQuestionResponse);
+  const currentSection = useSelector(selectors.selectCurrentSection);
   const nextSection = useSelector(selectors.selectNextSection);
+  const prevQuestionId = useSelector(selectors.selectPrevQuestionId);
+  const nextQuestionId = useSelector(selectors.selectNextQuestionId);
+
+  /*************************
+   * Package Instruction States
+   *************************/
+  const [packageInstructionIndex, setPackageInstructionIndex] = useState<number>(0);
 
   /*************************
    * Modal States
@@ -71,7 +79,7 @@ export const Session = () => {
 
   const handleBeginExamConfirm = () => {
     handleBeginExamModalToggle(false)();
-    handleSectionChange(nextSection?.id ?? null);
+    setPackageInstructionIndex(1);
   };
 
   const handleEndExamConfirm = () => {
@@ -123,6 +131,43 @@ export const Session = () => {
     [session_id, currentSession.redirect_url, navigateToSection, endSession, refetchSession],
   );
 
+  const handleNavigatePrev = () => {
+    if (prevQuestionId) {
+      handleQuestionChange(prevQuestionId);
+    }
+  };
+
+  const handleNavigateNext = () => {
+    if (sectionType === SessionSectionType.PACKAGE_INSTRUCTION) {
+      if (packageInstructionIndex === 0) {
+        handleBeginExamModalToggle(true)();
+      } else if (packageInstructionIndex < 4) {
+        setPackageInstructionIndex((currentIndex) => currentIndex + 1);
+      } else if (packageInstructionIndex === 4) {
+        handleSectionChange(nextSection?.id ?? null);
+      }
+    } else if (nextQuestionId) {
+      handleQuestionChange(nextQuestionId);
+    } else {
+      handleQuestionChange(currentSection?.questions[0].id ?? null);
+    }
+  };
+
+  const handleReturnToOverview = () => {
+    handleSectionChange(null);
+  };
+
+  const handleTimeExpired = () => {
+    if (
+      sectionType === SessionSectionType.PACKAGE_INSTRUCTION ||
+      sectionType === SessionSectionType.SECTION_INSTRUCTION
+    ) {
+      handleNavigateNext();
+    } else if (sectionType === SessionSectionType.QUESTION) {
+      handleTimeExpiredModalToggle(true)();
+    }
+  };
+
   const sectionType = useMemo(() => {
     const { completed, section_id, question_id } = currentSession;
 
@@ -152,7 +197,7 @@ export const Session = () => {
   const sessionContent = useMemo(() => {
     switch (sectionType) {
       case SessionSectionType.PACKAGE_INSTRUCTION:
-        return <PackageInstruction />;
+        return <PackageInstruction index={packageInstructionIndex} />;
       case SessionSectionType.SECTION_INSTRUCTION:
         return currentSession.section_id ? <SectionInstruction sectionId={currentSession.section_id} /> : null;
       case SessionSectionType.QUESTION:
@@ -171,7 +216,7 @@ export const Session = () => {
       default:
         return null;
     }
-  }, [sectionType, currentSession.section_id, currentSession.question_id, session_id]);
+  }, [sectionType, currentSession.section_id, currentSession.question_id, session_id, packageInstructionIndex]);
 
   if (isLoading || !currentSession.id) {
     return <Loading />;
@@ -181,8 +226,10 @@ export const Session = () => {
     <>
       <div className="session__container">
         <Header
-          onTimeExpired={handleTimeExpiredModalToggle(true)}
+          onTimeExpired={handleTimeExpired}
           isSessionCompleted={Boolean(currentSession.completed)}
+          sectionType={sectionType}
+          packageInstructionIndex={packageInstructionIndex}
         />
         <SubHeader
           sectionType={sectionType}
@@ -196,9 +243,9 @@ export const Session = () => {
           sectionType={sectionType}
           isSessionCompleted={Boolean(currentSession.completed)}
           isHotkeyDisabled={isHotkeyDisabled}
-          onSectionChange={handleSectionChange}
-          onQuestionChange={handleQuestionChange}
-          onBeginExamModalToggle={handleBeginExamModalToggle}
+          onNavigatePrev={handleNavigatePrev}
+          onNavigateNext={handleNavigateNext}
+          onReturnToOverview={handleReturnToOverview}
           onEndExamModalToggle={handleEndExamModalToggle}
           onEndSectionModalToggle={handleEndSectionModalToggle}
           onNavigatorModalToggle={handleNavigatorModalToggle}
@@ -273,7 +320,7 @@ export const Session = () => {
       {isNavigatorModalOpen && (
         <Modal
           className="navigator__modal"
-          title="Navigator - select a qusetion to go to it"
+          title="Navigator - select a question to go to it"
           primaryButtonText={modals.MODAL_BUTTON_TYPES.Close}
           onPrimaryButtonClick={handleNavigatorModalToggle(false)}
           onClose={handleNavigatorModalToggle(false)}
