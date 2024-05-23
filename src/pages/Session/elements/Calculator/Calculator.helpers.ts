@@ -1,19 +1,23 @@
 import { ModifierTypes, CalculationState } from './Calculator.types';
 
-// --------------------------------------
-// --------------------------------------
-export function formatDisplay(inValue: number) {
+export const formatDisplayText = (inValue: string) => {
+  if (inValue.length > 10) {
+    return inValue.substring(0, 10);
+  }
+
+  return inValue;
+};
+
+export const formatDisplay = (inValue: number) => {
   const inValueString: string = inValue.toString();
   if (inValueString.length > 10) {
     return Number(inValueString.substring(0, 10));
   }
 
   return inValue;
-}
+};
 
-// --------------------------------------
-// --------------------------------------
-export function performCalculation(value1: number, value2: number, modifier: ModifierTypes) {
+export const performCalculation = (value1: number, value2: number, modifier: ModifierTypes) => {
   switch (modifier) {
     case ModifierTypes.plus:
       return value1 + value2;
@@ -27,11 +31,9 @@ export function performCalculation(value1: number, value2: number, modifier: Mod
       console.error('Modifier (' + modifier + ') not found.');
       return 0;
   }
-}
+};
 
-// --------------------------------------
-// --------------------------------------
-export function getAnswerAfterModifier(inCalculation: CalculationState, inModifier: ModifierTypes) {
+export const getAnswerAfterModifier = (inCalculation: CalculationState, inModifier: ModifierTypes) => {
   if (!inCalculation.value) {
     return inCalculation.answer;
   } else if (!inCalculation.answer) {
@@ -39,11 +41,9 @@ export function getAnswerAfterModifier(inCalculation: CalculationState, inModifi
   } else {
     return performCalculation(inCalculation.answer, inCalculation.value, inModifier);
   }
-}
+};
 
-// --------------------------------------
-// --------------------------------------
-export function getAnswerAfterSpecialModifier(inCalculation: CalculationState, inModifier: ModifierTypes) {
+export const getAnswerAfterSpecialModifier = (inCalculation: CalculationState, inModifier: ModifierTypes) => {
   switch (inModifier) {
     case ModifierTypes.plusminus:
       if (inCalculation.value) {
@@ -68,11 +68,9 @@ export function getAnswerAfterSpecialModifier(inCalculation: CalculationState, i
       console.error('No special modifier case for: ' + inModifier);
       return inCalculation.value;
   }
-}
+};
 
-// --------------------------------------
-// --------------------------------------
-export function getDisplayableAnswer(displayNumber: number) {
+export const getDisplayableAnswer = (displayNumber: number) => {
   const displayNumberString: string = displayNumber.toString();
   if (displayNumberString.length > 10) {
     // Only display 6 decimal places.
@@ -80,4 +78,4 @@ export function getDisplayableAnswer(displayNumber: number) {
   }
 
   return displayNumber;
-}
+};

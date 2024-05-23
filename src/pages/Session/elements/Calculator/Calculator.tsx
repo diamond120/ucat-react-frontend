@@ -1,65 +1,94 @@
-import React, { useState } from 'react';
+import type { CalculatorProps } from './Calculator.types';
+
+import React, { useState, useEffect } from 'react';
+import { useHotkeys } from 'react-hotkeys-hook';
+import classNames from 'classnames';
 import { CalculationState, ModifierTypes, MrcState } from './Calculator.types';
 import * as helpers from './Calculator.helpers';
 import './_calculator.scss';
 
-export const Calculator = () => {
-  const [calculation, setCalculation] = useState<CalculationState>(new CalculationState(ModifierTypes.NONE, 0, 0));
+export const Calculator = ({ onModalClose }: CalculatorProps) => {
+  const [calculation, setCalculation] = useState<CalculationState>(new CalculationState(ModifierTypes.NONE, 0, '0', 0));
   const [mrcValues, setMrcValues] = useState<MrcState>(new MrcState(0, 0));
+  const [activeButton, setActiveButton] = useState<string | null>(null);
 
-  function onNumberClicked(event: React.MouseEvent<HTMLButtonElement>) {
-    const target = event.target as HTMLButtonElement;
-    const number: number = Number(target.textContent);
+  const onNumberClicked = (numString: string) => () => {
+    setActiveButton(numString);
+
+    setTimeout(() => setActiveButton(null), 100);
+
+    if (numString === '.' && calculation.text.includes('.')) {
+      return;
+    }
+
+    const text = helpers.formatDisplayText(calculation.text === '0' ? numString ?? '' : calculation.text + numString);
+    const value = helpers.formatDisplay(eval(text));
 
     setCalculation({
       ...calculation,
       modifier: calculation.modifier,
-      value: Number(helpers.formatDisplay(calculation.value * 10 + number)),
+      text,
+      value,
       answer: Number(!calculation.modifier ? 0 : helpers.formatDisplay(calculation.answer)),
     });
-  }
+  };
 
-  function onModifierClicked(inModifier: ModifierTypes) {
+  const onBackspaceClicked = () => {
+    const text = calculation.text.slice(0, -1) === '' ? '0' : calculation.text.slice(0, -1);
+    const value = helpers.formatDisplay(eval(text));
+
+    setCalculation({
+      ...calculation,
+      text,
+      value,
+    });
+  };
+
+  const onModifierClicked = (inModifier: ModifierTypes) => () => {
+    setActiveButton(inModifier);
+    setTimeout(() => setActiveButton(null), 100);
+
     const newAnswer: number = helpers.formatDisplay(helpers.getAnswerAfterModifier(calculation, inModifier));
-
     setCalculation({
       ...calculation,
       modifier: inModifier,
       value: 0,
+      text: '0',
       answer: newAnswer,
     });
-  }
+  };
 
-  function onSpecialModifierClicked(inModifier: ModifierTypes) {
+  const onSpecialModifierClicked = (inModifier: ModifierTypes) => () => {
     const newAnswer: number = helpers.getAnswerAfterSpecialModifier(calculation, inModifier);
 
     setCalculation({
       ...calculation,
       modifier: calculation.modifier,
       value: 0,
+      text: '0',
       answer: helpers.formatDisplay(newAnswer),
     });
-  }
+  };
 
-  function onMMinusClicked() {
+  const onMMinusClicked = () => {
     if (calculation.value !== 0 || calculation.answer !== 0) {
       setMrcValues({
         mPlus: mrcValues.mPlus,
         mMinus: calculation.value !== 0 ? calculation.value : calculation.answer,
       });
     }
-  }
+  };
 
-  function onMPlusClicked() {
+  const onMPlusClicked = () => {
     if (calculation.value !== 0 || calculation.answer !== 0) {
       setMrcValues({
         mPlus: calculation.value !== 0 ? calculation.value : calculation.answer,
         mMinus: mrcValues.mMinus,
       });
     }
-  }
+  };
 
-  function onMRCClicked() {
+  const onMRCClicked = () => {
     // Both M values exist. Cycle between two.
     const bBothMValuesExist: boolean = mrcValues.mMinus !== 0 && mrcValues.mPlus !== 0;
     if (bBothMValuesExist) {
@@ -97,21 +126,25 @@ export const Calculator = () => {
         });
       }
     }
-  }
+  };
 
-  function onSubmitClicked() {
+  const onSubmitClicked = () => {
+    setActiveButton('=');
+    setTimeout(() => setActiveButton(null), 100);
+
     if (calculation.modifier && calculation.value) {
       // Maybe come back and add exception for divide by zero error
       setCalculation({
         ...calculation,
         modifier: ModifierTypes.NONE,
         value: 0,
+        text: '0',
         answer: helpers.performCalculation(calculation.answer, calculation.value, calculation.modifier),
       });
     }
-  }
+  };
 
-  function onClearClicked() {
+  const onClearClicked = () => {
     // Clear MRC if clear was clicked multiple times.
     if (calculation.value === 0 && calculation.answer === 0) {
       setMrcValues({
@@ -124,9 +157,46 @@ export const Calculator = () => {
       ...calculation,
       modifier: ModifierTypes.NONE,
       value: 0,
+      text: '0',
       answer: 0,
     });
-  }
+  };
+
+  const onSpecialKeyClicked = (event: KeyboardEvent) => {
+    switch (event.key) {
+      case '+':
+        onModifierClicked(ModifierTypes.plus)();
+        break;
+      case '-':
+        onModifierClicked(ModifierTypes.minus)();
+        break;
+      case '*':
+        onModifierClicked(ModifierTypes.multiply)();
+        break;
+      case '/':
+        onModifierClicked(ModifierTypes.divide)();
+        break;
+
+      default:
+        break;
+    }
+  };
+
+  ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '.'].forEach((key) => {
+    useHotkeys(key, onNumberClicked(key), { preventDefault: true });
+  });
+
+  useHotkeys('backspace', onBackspaceClicked, { preventDefault: true });
+  useHotkeys('enter', onSubmitClicked, { preventDefault: true });
+  useHotkeys('escape', () => onModalClose?.(), { preventDefault: true });
+
+  useEffect(() => {
+    window.addEventListener('keydown', onSpecialKeyClicked);
+
+    return () => {
+      window.removeEventListener('keydown', onSpecialKeyClicked);
+    };
+  }, [onSpecialKeyClicked]);
 
   return (
     <div className="calculator__container">
@@ -148,86 +218,201 @@ export const Calculator = () => {
       <div className="calculator__buttons">
         <div className="calculator__buttons-grid--left">
           <button
-            className="calculator__button-modifier"
-            onClick={() => onSpecialModifierClicked(ModifierTypes.plusminus)}
+            className="calculator__button calculator__button-modifier"
+            onClick={onSpecialModifierClicked(ModifierTypes.plusminus)}
           >
             +/-
           </button>
-          <button className="calculator__button-modifier" onClick={() => onSpecialModifierClicked(ModifierTypes.sqrt)}>
+          <button
+            className="calculator__button calculator__button-modifier"
+            onClick={onSpecialModifierClicked(ModifierTypes.sqrt)}
+          >
             &#8730;
           </button>
           <button
-            className="calculator__button-modifier"
-            onClick={() => onSpecialModifierClicked(ModifierTypes.percent)}
+            className="calculator__button calculator__button-modifier"
+            onClick={onSpecialModifierClicked(ModifierTypes.percent)}
           >
             %
           </button>
 
-          <button className="calculator__button-modifier" onClick={onMRCClicked}>
+          <button className="calculator__button calculator__button-modifier" onClick={onMRCClicked}>
             MRC
           </button>
-          <button className="calculator__button-modifier" onClick={onMMinusClicked}>
+          <button className="calculator__button calculator__button-modifier" onClick={onMMinusClicked}>
             M-
           </button>
-          <button className="calculator__button-modifier" onClick={onMPlusClicked}>
+          <button className="calculator__button calculator__button-modifier" onClick={onMPlusClicked}>
             M+
           </button>
 
-          <button className="calculator__button-number" onClick={onNumberClicked}>
+          <button
+            className={classNames({
+              calculator__button: true,
+              'calculator__button-number': true,
+              'calculator__button-is--active': activeButton === '7',
+            })}
+            onClick={onNumberClicked('7')}
+          >
             7
           </button>
-          <button className="calculator__button-number" onClick={onNumberClicked}>
+          <button
+            className={classNames({
+              calculator__button: true,
+              'calculator__button-number': true,
+              'calculator__button-is--active': activeButton === '8',
+            })}
+            onClick={onNumberClicked('8')}
+          >
             8
           </button>
-          <button className="calculator__button-number" onClick={onNumberClicked}>
+          <button
+            className={classNames({
+              calculator__button: true,
+              'calculator__button-number': true,
+              'calculator__button-is--active': activeButton === '9',
+            })}
+            onClick={onNumberClicked('9')}
+          >
             9
           </button>
 
-          <button className="calculator__button-number" onClick={onNumberClicked}>
+          <button
+            className={classNames({
+              calculator__button: true,
+              'calculator__button-number': true,
+              'calculator__button-is--active': activeButton === '4',
+            })}
+            onClick={onNumberClicked('4')}
+          >
             4
           </button>
-          <button className="calculator__button-number" onClick={onNumberClicked}>
+          <button
+            className={classNames({
+              calculator__button: true,
+              'calculator__button-number': true,
+              'calculator__button-is--active': activeButton === '5',
+            })}
+            onClick={onNumberClicked('5')}
+          >
             5
           </button>
-          <button className="calculator__button-number" onClick={onNumberClicked}>
+          <button
+            className={classNames({
+              calculator__button: true,
+              'calculator__button-number': true,
+              'calculator__button-is--active': activeButton === '6',
+            })}
+            onClick={onNumberClicked('6')}
+          >
             6
           </button>
 
-          <button className="calculator__button-number" onClick={onNumberClicked}>
+          <button
+            className={classNames({
+              calculator__button: true,
+              'calculator__button-number': true,
+              'calculator__button-is--active': activeButton === '1',
+            })}
+            onClick={onNumberClicked('1')}
+          >
             1
           </button>
-          <button className="calculator__button-number" onClick={onNumberClicked}>
+          <button
+            className={classNames({
+              calculator__button: true,
+              'calculator__button-number': true,
+              'calculator__button-is--active': activeButton === '2',
+            })}
+            onClick={onNumberClicked('2')}
+          >
             2
           </button>
-          <button className="calculator__button-number" onClick={onNumberClicked}>
+          <button
+            className={classNames({
+              calculator__button: true,
+              'calculator__button-number': true,
+              'calculator__button-is--active': activeButton === '3',
+            })}
+            onClick={onNumberClicked('3')}
+          >
             3
           </button>
 
-          <button className="calculator__button-modifier" onClick={onClearClicked}>
+          <button className="calculator__button calculator__button-modifier" onClick={onClearClicked}>
             ON/C
           </button>
-          <button className="calculator__button-number" onClick={onNumberClicked}>
+          <button
+            className={classNames({
+              calculator__button: true,
+              'calculator__button-number': true,
+              'calculator__button-is--active': activeButton === '0',
+            })}
+            onClick={onNumberClicked('0')}
+          >
             0
           </button>
-          <button className="calculator__button-number" onClick={onNumberClicked}>
+          <button
+            className={classNames({
+              calculator__button: true,
+              'calculator__button-number': true,
+              'calculator__button-is--active': activeButton === '.',
+            })}
+            onClick={onNumberClicked('.')}
+          >
             .
           </button>
         </div>
 
         <div className="calculator__buttons-grid--right">
-          <button className="calculator__button-modifier" onClick={() => onModifierClicked(ModifierTypes.divide)}>
+          <button
+            className={classNames({
+              calculator__button: true,
+              'calculator__button-modifier': true,
+              'calculator__button-is--active': activeButton === ModifierTypes.divide,
+            })}
+            onClick={onModifierClicked(ModifierTypes.divide)}
+          >
             &#247;
           </button>
-          <button className="calculator__button-modifier" onClick={() => onModifierClicked(ModifierTypes.multiply)}>
+          <button
+            className={classNames({
+              calculator__button: true,
+              'calculator__button-modifier': true,
+              'calculator__button-is--active': activeButton === ModifierTypes.multiply,
+            })}
+            onClick={onModifierClicked(ModifierTypes.multiply)}
+          >
             x
           </button>
-          <button className="calculator__button-modifier" onClick={() => onModifierClicked(ModifierTypes.minus)}>
+          <button
+            className={classNames({
+              calculator__button: true,
+              'calculator__button-modifier': true,
+              'calculator__button-is--active': activeButton === ModifierTypes.minus,
+            })}
+            onClick={onModifierClicked(ModifierTypes.minus)}
+          >
             -
           </button>
-          <button className="calculator__button-modifier" onClick={() => onModifierClicked(ModifierTypes.plus)}>
+          <button
+            className={classNames({
+              calculator__button: true,
+              'calculator__button-modifier': true,
+              'calculator__button-is--active': activeButton === ModifierTypes.plus,
+            })}
+            onClick={onModifierClicked(ModifierTypes.plus)}
+          >
             +
           </button>
-          <button className="calculator__button-submit" onClick={onSubmitClicked}>
+          <button
+            className={classNames({
+              calculator__button: true,
+              'calculator__button-submit': true,
+              'calculator__button-is--active': activeButton === '=',
+            })}
+            onClick={onSubmitClicked}
+          >
             =
           </button>
         </div>

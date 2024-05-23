@@ -1,22 +1,28 @@
+export type CalculatorProps = {
+  onModalClose?: () => void;
+};
+
 export enum ModifierTypes {
-  NONE,
-  plus,
-  minus,
-  multiply,
-  divide,
-  sqrt,
-  percent,
-  plusminus,
+  NONE = 'NONE',
+  plus = 'plus',
+  minus = 'minus',
+  multiply = 'multiply',
+  divide = 'divide',
+  sqrt = 'sqrt',
+  percent = 'percent',
+  plusminus = 'plusminus',
 }
 
 export class CalculationState {
   public modifier: ModifierTypes;
   public value: number;
+  public text: string;
   public answer: number;
 
-  constructor(modifier: ModifierTypes, value: number, answer: number) {
+  constructor(modifier: ModifierTypes, value: number, text: string, answer: number) {
     this.modifier = modifier;
     this.value = value;
+    this.text = text;
     this.answer = answer;
   }
 }

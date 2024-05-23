@@ -15,7 +15,7 @@ export const SubHeaderButton = ({ type, flagged, isHotkeyDisabled, onClick }: Su
       enabled: !isHotkeyDisabled,
     },
     [onClick],
-  ) as React.RefObject<HTMLButtonElement>;
+  );
 
   return (
     <button
