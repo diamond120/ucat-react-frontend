@@ -29,7 +29,7 @@ export const Header = ({ onTimeExpired, isSessionCompleted, sectionType, package
     }
 
     if (sectionType === SessionSectionType.QUESTION) {
-      return <TimerButton id={uuid()} duration={currentSession.remaining_time} onTimeExpired={onTimeExpired} />;
+      return <TimerButton duration={currentSession.remaining_time} onTimeExpired={onTimeExpired} />;
     }
 
     return null;

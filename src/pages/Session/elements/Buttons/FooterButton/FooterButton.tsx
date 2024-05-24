@@ -13,6 +13,7 @@ export const FooterButton = ({ type, onClick, isDisabled, isHotkeyDisabled }: Fo
     {
       preventDefault: true,
       enabled: !isDisabled && !isHotkeyDisabled,
+      enableOnFormTags: true,
     },
     [onClick],
   );

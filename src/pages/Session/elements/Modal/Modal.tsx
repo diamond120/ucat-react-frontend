@@ -26,6 +26,7 @@ export const Modal = ({
     {
       preventDefault: true,
       enabled: Boolean(primaryButtonText) && Boolean(onPrimaryButtonClick),
+      enableOnFormTags: true,
     },
     [onPrimaryButtonClick],
   );
@@ -35,6 +36,7 @@ export const Modal = ({
     {
       preventDefault: true,
       enabled: Boolean(secondaryButtonText) && Boolean(onSecondaryButtonClick),
+      enableOnFormTags: true,
     },
     [onSecondaryButtonClick],
   );

@@ -13,6 +13,7 @@ export const SubHeaderButton = ({ type, flagged, isHotkeyDisabled, onClick }: Su
     {
       preventDefault: true,
       enabled: !isHotkeyDisabled,
+      enableOnFormTags: true,
     },
     [onClick],
   );

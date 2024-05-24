@@ -26,12 +26,12 @@ export const Packages = () => {
   }, [isSuccessSession, sessionData?.id]);
 
   const handleStartSession =
-    (packageId: Package['id'], isOfficialSession: boolean = false) =>
+    (pkg: Package, isOfficialSession: boolean = false) =>
     () => {
       const params: StartSessionParams = {
         user_id: variables.TEST_USER_ID,
-        package_id: packageId,
-        exam_code: variables.TEST_EXAM_CODE,
+        package_id: pkg.id,
+        exam_code: pkg.code,
       };
 
       if (isOfficialSession) {
@@ -56,9 +56,9 @@ export const Packages = () => {
             <h3>Official</h3>
             {packages
               .filter(({ type }) => type === 'Practice Test')
-              .map(({ id, name }) => (
-                <a key={id} onClick={handleStartSession(id, true)}>
-                  {name}
+              .map((pkg) => (
+                <a key={pkg.id} onClick={handleStartSession(pkg, true)}>
+                  {pkg.name}
                 </a>
               ))}
           </div>
@@ -66,9 +66,9 @@ export const Packages = () => {
             <h3>Self</h3>
             {packages
               .filter(({ type }) => type === 'Practice Test')
-              .map(({ id, name }) => (
-                <a key={id} onClick={handleStartSession(id)}>
-                  {name}
+              .map((pkg) => (
+                <a key={pkg.id} onClick={handleStartSession(pkg)}>
+                  {pkg.name}
                 </a>
               ))}
           </div>
