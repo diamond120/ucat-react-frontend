@@ -33,9 +33,9 @@ export const QuestionChips = ({ onQuestionChange }: QuestionChipsProps) => {
             className={classNames({
               'question-chips__chip': true,
               'question-chips__chip--current': question.id === currentQuestionResponse.question_id,
-              'question-chips__chip--correct': question.score === 1 || question.score === 3,
+              'question-chips__chip--correct': question.score === 2 || (question.type === 'MC' && question.score === 1),
               'question-chips__chip--incorrect': question.score === 0,
-              'question-chips__chip--partially-correct': question.score === 2,
+              'question-chips__chip--partially-correct': question.type === 'DD' && question.score === 1,
             })}
             onClick={handleQuestionNavigate(question.id)}
             disabled={question.id === currentQuestionResponse.question_id}

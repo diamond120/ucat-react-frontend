@@ -19,7 +19,7 @@ export type Section = {
   id: number;
   name: string;
   type: 'VR' | 'DM' | 'QR' | 'AR' | 'SJ';
-  questions: (Pick<Question, 'id' | 'status'> &
+  questions: (Pick<Question, 'id' | 'status' | 'type'> &
     Pick<QuestionResponse, 'flagged'> & { score: number; duration: number })[];
   correct: number;
   partially_correct: number;
