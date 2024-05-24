@@ -1,9 +1,26 @@
 import type { RadioOptionsProps } from './RadioOptions.types';
 
-import React, { useMemo } from 'react';
+import React, { useState, useMemo, useCallback, useEffect } from 'react';
 import './_radio-options.scss';
 
 export const RadioOptions = ({ question, value: selectedValue, isSessionCompleted, onChange }: RadioOptionsProps) => {
+  const [currentValue, setCurrentValue] = useState<string>(selectedValue);
+
+  useEffect(() => {
+    setCurrentValue(selectedValue);
+  }, [question, selectedValue]);
+
+  const handleChange = useCallback(
+    (value: string) => () => {
+      if (!isSessionCompleted) {
+        const formattedValue = JSON.stringify(value);
+        setCurrentValue(formattedValue);
+        onChange(formattedValue);
+      }
+    },
+    [isSessionCompleted, setCurrentValue, onChange],
+  );
+
   const radioOptions = useMemo(() => {
     try {
       const optionLabels = JSON.parse(question.options || '[]') as string[];
@@ -28,8 +45,8 @@ export const RadioOptions = ({ question, value: selectedValue, isSessionComplete
               type="radio"
               name="options"
               value={value}
-              checked={value === JSON.parse(selectedValue)}
-              onChange={() => onChange(JSON.stringify(value))}
+              checked={value === JSON.parse(currentValue)}
+              onChange={handleChange(value)}
               aria-labelledby={`optionLabel${index}`}
             />
             {value}.{' '}

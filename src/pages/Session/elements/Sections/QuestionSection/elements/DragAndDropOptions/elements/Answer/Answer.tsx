@@ -7,11 +7,12 @@ import classNames from 'classnames';
 import * as constants from '../../DragAndDrop.constants';
 import './_answer.scss';
 
-export const Answer = ({ id, text, hidden, onEnd }: AnswerProps) => {
+export const Answer = ({ id, text, hidden, disableDrag, onEnd }: AnswerProps) => {
   const [{ isDragging }, drag] = useDrag<DragItem, void, { isDragging: boolean }>(
     () => ({
       type: constants.DragDropTypes.ANSWER,
       item: { id, text },
+      canDrag: () => !disableDrag,
       end: (item, monitor) => {
         const dropResult = monitor.getDropResult();
         if (!dropResult) {

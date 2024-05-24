@@ -4,5 +4,6 @@ export type AnswerProps = {
   id?: number;
   text: string;
   hidden?: boolean;
+  disableDrag?: boolean;
   onEnd?: (item: DragItem) => void;
 };

@@ -1,6 +1,6 @@
 import type { DragAndDropOptionsProps, DragItem } from './DragAndDropOptions.types';
 
-import React, { useMemo, useCallback } from 'react';
+import React, { useState, useMemo, useCallback, useEffect } from 'react';
 import classNames from 'classnames';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
@@ -13,11 +13,17 @@ export const DragAndDropOptions = ({
   isSessionCompleted,
   onChange,
 }: DragAndDropOptionsProps) => {
+  const [currentValue, setCurrentValue] = useState<string>(selectedValue);
+
+  useEffect(() => {
+    setCurrentValue(selectedValue);
+  }, [question, selectedValue]);
+
   const dragAndDropOptions = useMemo(() => {
     try {
       const optionLabels = JSON.parse(question.options || '[]') as string[];
       const answers = JSON.parse(question.answer || '[]') as string[];
-      const values = JSON.parse(selectedValue || '[]') as (string | null)[];
+      const values = JSON.parse(currentValue || '[]') as (string | null)[];
 
       return optionLabels.map((optionLabel, index) => ({
         label: optionLabel,
@@ -27,7 +33,7 @@ export const DragAndDropOptions = ({
     } catch (error) {
       return [];
     }
-  }, [question.options, selectedValue]);
+  }, [question.options, currentValue]);
 
   const dragAndDropValues = useMemo(() => {
     try {
@@ -44,6 +50,7 @@ export const DragAndDropOptions = ({
       if (item.id !== undefined && item.id >= 0) {
         newAnswers[item.id] = null;
       }
+      setCurrentValue(JSON.stringify(newAnswers));
       onChange(JSON.stringify(newAnswers));
     },
     [dragAndDropOptions, onChange],
@@ -55,6 +62,7 @@ export const DragAndDropOptions = ({
       if (item.id !== undefined) {
         newAnswers[item.id] = null;
       }
+      setCurrentValue(JSON.stringify(newAnswers));
       onChange(JSON.stringify(newAnswers));
     },
     [dragAndDropOptions, onChange],
@@ -74,7 +82,9 @@ export const DragAndDropOptions = ({
               <div className="drag_and_drop_options__questions-item--label">{option.label}</div>
               <div className="drag_and_drop_options__questions-item--value">
                 <DropArea id={index} onDrop={handleDrop}>
-                  {option.value && <Answer id={index} text={option.value} onEnd={handleDropOut} />}
+                  {option.value && (
+                    <Answer id={index} text={option.value} disableDrag={isSessionCompleted} onEnd={handleDropOut} />
+                  )}
                 </DropArea>
               </div>
               {isSessionCompleted && (
@@ -97,6 +107,7 @@ export const DragAndDropOptions = ({
               key={text}
               text={text}
               hidden={Boolean(question.actions?.length) && dragAndDropOptions.some(({ value }) => value === text)}
+              disableDrag={isSessionCompleted}
             />
           ))}
         </div>
