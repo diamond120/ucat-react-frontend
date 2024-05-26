@@ -21,7 +21,8 @@ export const Calculator = ({ onModalClose }: CalculatorProps) => {
       return;
     }
 
-    const text = helpers.formatDisplayText(calculation.text === '0' ? numString ?? '' : calculation.text + numString);
+    let text = helpers.formatDisplayText(calculation.text === '0' ? numString ?? '' : calculation.text + numString);
+    if(text === '.') text = '0.';
     const value = helpers.formatDisplay(eval(text));
 
     setCalculation({
@@ -30,17 +31,6 @@ export const Calculator = ({ onModalClose }: CalculatorProps) => {
       text,
       value,
       answer: Number(!calculation.modifier ? 0 : helpers.formatDisplay(calculation.answer)),
-    });
-  };
-
-  const onBackspaceClicked = () => {
-    const text = calculation.text.slice(0, -1) === '' ? '0' : calculation.text.slice(0, -1);
-    const value = helpers.formatDisplay(eval(text));
-
-    setCalculation({
-      ...calculation,
-      text,
-      value,
     });
   };
 
@@ -186,7 +176,8 @@ export const Calculator = ({ onModalClose }: CalculatorProps) => {
     useHotkeys(key, onNumberClicked(key), { preventDefault: true });
   });
 
-  useHotkeys('backspace', onBackspaceClicked, { preventDefault: true });
+  useHotkeys('backspace', onClearClicked, { preventDefault: true });
+  useHotkeys('alt+c', onClearClicked, { preventDefault: true });
   useHotkeys('enter', onSubmitClicked, { preventDefault: true });
   useHotkeys('escape', () => onModalClose?.(), { preventDefault: true });
 
