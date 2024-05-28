@@ -62,7 +62,6 @@ export const Session = () => {
 
   const isHotkeyDisabled =
     isExplainModalOpen ||
-    isCalculatorModalOpen ||
     isBeginExamModalOpen ||
     isEndExamModalOpen ||
     isEndSectionModalOpen ||

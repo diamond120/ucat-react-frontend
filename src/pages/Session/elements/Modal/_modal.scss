@@ -1,16 +1,18 @@
 .ReactModal {
     &__Overlay {
+        position: static !important;
         background: transparent !important;
     }
 
     &__Content {
-        position: fixed !important;
+        position: static !important;
         inset: 0 !important;
         display: flex;
         justify-content: center;
         align-items: center;
         background: none !important;
         overflow: hidden !important;
+        height: 100vh;
     }
 }
 

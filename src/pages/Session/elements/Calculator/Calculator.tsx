@@ -22,7 +22,7 @@ export const Calculator = ({ onModalClose }: CalculatorProps) => {
     }
 
     let text = helpers.formatDisplayText(calculation.text === '0' ? numString ?? '' : calculation.text + numString);
-    if(text === '.') text = '0.';
+    if (text === '.') text = '0.';
     const value = helpers.formatDisplay(eval(text));
 
     setCalculation({
