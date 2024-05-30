@@ -1,5 +1,3 @@
-import type { CalculatorProps } from './Calculator.types';
-
 import React, { useState, useEffect } from 'react';
 import { useHotkeys } from 'react-hotkeys-hook';
 import classNames from 'classnames';
@@ -7,7 +5,7 @@ import { CalculationState, ModifierTypes, MrcState } from './Calculator.types';
 import * as helpers from './Calculator.helpers';
 import './_calculator.scss';
 
-export const Calculator = ({ onModalClose }: CalculatorProps) => {
+export const Calculator = () => {
   const [calculation, setCalculation] = useState<CalculationState>(new CalculationState(ModifierTypes.NONE, 0, '0', 0));
   const [mrcValues, setMrcValues] = useState<MrcState>(new MrcState(0, 0));
   const [activeButton, setActiveButton] = useState<string | null>(null);
@@ -182,7 +180,6 @@ export const Calculator = ({ onModalClose }: CalculatorProps) => {
   useHotkeys('backspace', onClearClicked, { preventDefault: true });
   useHotkeys('alt+c', onClearClicked, { preventDefault: true });
   useHotkeys('enter', onSubmitClicked, { preventDefault: true });
-  useHotkeys('escape', () => onModalClose?.(), { preventDefault: true });
 
   useEffect(() => {
     window.addEventListener('keydown', onSpecialKeyClicked);

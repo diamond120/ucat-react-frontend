@@ -254,7 +254,7 @@ export const Session = () => {
           title={<SubHeaderButton type="calculator" isHotkeyDisabled={isHotkeyDisabled} />}
           onClose={handleCalculatorModalToggle(false)}
         >
-          <Calculator onModalClose={handleCalculatorModalToggle(false)} />
+          <Calculator />
         </Modal>
       )}
 

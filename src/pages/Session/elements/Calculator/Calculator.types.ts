@@ -1,7 +1,3 @@
-export type CalculatorProps = {
-  onModalClose?: () => void;
-};
-
 export enum ModifierTypes {
   NONE = 'NONE',
   plus = 'plus',
