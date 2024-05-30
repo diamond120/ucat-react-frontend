@@ -197,7 +197,9 @@ export const Calculator = ({ onModalClose }: CalculatorProps) => {
       <div className="calculator__display-box">
         <h4 className="calculator__display-text--mrc">{mrcValues.mMinus > 0 || mrcValues.mPlus > 0 ? 'M' : ''}</h4>
         <h3 className="calculator__display-text">
-          { helpers.formatDot(isNaN(calculation.value) ? helpers.getDisplayableAnswer(calculation.answer) : calculation.value) }
+          {helpers.formatDot(
+            isNaN(calculation.value) ? helpers.getDisplayableAnswer(calculation.answer) : calculation.value,
+          )}
         </h3>
       </div>
 
