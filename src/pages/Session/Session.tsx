@@ -61,12 +61,7 @@ export const Session = () => {
   const [isTimeExpiredModalOpen, setIsTimeExpiredModalOpen] = useState<boolean>(false);
 
   const isHotkeyDisabled =
-    isExplainModalOpen ||
-    isBeginExamModalOpen ||
-    isEndExamModalOpen ||
-    isEndSectionModalOpen ||
-    isNavigatorModalOpen ||
-    isTimeExpiredModalOpen;
+    isExplainModalOpen || isBeginExamModalOpen || isEndExamModalOpen || isEndSectionModalOpen || isTimeExpiredModalOpen;
 
   const handleExplainModalToggle = (isOpen: boolean) => () => setIsExplainModalOpen(isOpen);
   const handleCalculatorModalToggle = (isOpen: boolean) => () => setIsCalculatorModalOpen(isOpen);
@@ -233,7 +228,7 @@ export const Session = () => {
         <SubHeader
           sectionType={sectionType}
           isSessionCompleted={Boolean(currentSession.completed)}
-          isHotkeyDisabled={isHotkeyDisabled}
+          isHotkeyDisabled={isHotkeyDisabled || isNavigatorModalOpen}
           onExplainModalToggle={handleExplainModalToggle}
           onCalculatorModalToggle={handleCalculatorModalToggle}
         />

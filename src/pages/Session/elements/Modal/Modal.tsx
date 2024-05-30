@@ -42,7 +42,7 @@ export const Modal = ({
   );
 
   return (
-    <Reactmodal isOpen>
+    <Reactmodal isOpen onRequestClose={onClose}>
       <Draggable handle=".modal__container" bounds="body">
         <div className={classNames(className, 'modal__container')}>
           <div className="modal__header">

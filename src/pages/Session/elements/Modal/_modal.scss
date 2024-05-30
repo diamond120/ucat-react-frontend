@@ -1,7 +1,7 @@
 .ReactModal {
     &__Overlay {
-        position: static !important;
         background: transparent !important;
+        pointer-events: none;
     }
 
     &__Content {
@@ -10,8 +10,10 @@
         display: flex;
         justify-content: center;
         align-items: center;
+        padding: 0 !important;
         background: none !important;
         overflow: hidden !important;
+        border: unset !important;
         height: 100vh;
     }
 }

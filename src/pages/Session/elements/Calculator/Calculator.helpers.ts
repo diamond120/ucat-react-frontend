@@ -19,10 +19,9 @@ export const formatDisplay = (inValue: number) => {
 
 export const formatDot = (inValue: string | number) => {
   let valueString = inValue.toString();
-  if(!valueString.includes('.'))
-    valueString += '.';
+  if (!valueString.includes('.')) valueString += '.';
   return valueString;
-}
+};
 
 export const performCalculation = (value1: number, value2: number, modifier: ModifierTypes) => {
   switch (modifier) {
