@@ -42,7 +42,7 @@ export const Calculator = ({ onModalClose }: CalculatorProps) => {
     setCalculation({
       ...calculation,
       modifier: inModifier,
-      value: 0,
+      value: NaN,
       text: '0',
       answer: newAnswer,
     });
@@ -54,7 +54,7 @@ export const Calculator = ({ onModalClose }: CalculatorProps) => {
     setCalculation({
       ...calculation,
       modifier: calculation.modifier,
-      value: 0,
+      value: NaN,
       text: '0',
       answer: helpers.formatDisplay(newAnswer),
     });
@@ -127,7 +127,7 @@ export const Calculator = ({ onModalClose }: CalculatorProps) => {
       setCalculation({
         ...calculation,
         modifier: ModifierTypes.NONE,
-        value: 0,
+        value: NaN,
         text: '0',
         answer: helpers.performCalculation(calculation.answer, calculation.value, calculation.modifier),
       });
@@ -146,7 +146,7 @@ export const Calculator = ({ onModalClose }: CalculatorProps) => {
     setCalculation({
       ...calculation,
       modifier: ModifierTypes.NONE,
-      value: 0,
+      value: NaN,
       text: '0',
       answer: 0,
     });
@@ -165,6 +165,9 @@ export const Calculator = ({ onModalClose }: CalculatorProps) => {
         break;
       case '/':
         onModifierClicked(ModifierTypes.divide)();
+        break;
+      case '.':
+        onNumberClicked('.')();
         break;
 
       default:
@@ -194,7 +197,7 @@ export const Calculator = ({ onModalClose }: CalculatorProps) => {
       <div className="calculator__display-box">
         <h4 className="calculator__display-text--mrc">{mrcValues.mMinus > 0 || mrcValues.mPlus > 0 ? 'M' : ''}</h4>
         <h3 className="calculator__display-text">
-          { helpers.formatDot(calculation.value ? calculation.value : helpers.getDisplayableAnswer(calculation.answer)) }
+          { helpers.formatDot(isNaN(calculation.value) ? helpers.getDisplayableAnswer(calculation.answer) : calculation.value) }
         </h3>
       </div>
 
