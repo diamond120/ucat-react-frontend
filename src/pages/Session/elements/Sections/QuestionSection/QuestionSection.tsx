@@ -91,7 +91,7 @@ export const QuestionSection = ({ sessionId, questionId, isSessionCompleted }: Q
           )}
 
           {isSessionCompleted && (
-            <div className="question-section__question--explanation" display="none">
+            <div className="question-section__question--explanation" style={{ display: 'none' }}>
               <h5>Why?</h5>
               <p dangerouslySetInnerHTML={{ __html: currentQuestionResponse.question.explanation ?? '' }} />
             </div>
