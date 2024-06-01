@@ -10,6 +10,11 @@ export const Calculator = () => {
   const [mrcValues, setMrcValues] = useState<MrcState>(new MrcState(0, 0));
   const [activeButton, setActiveButton] = useState<string | null>(null);
 
+  // Matt Added
+  const [lastOperation, setLastOperation] = useState(null);
+  const [lastOperand, setLastOperand] = useState(null);
+
+
   const onNumberClicked = (numString: string) => () => {
     setActiveButton(numString);
 
@@ -116,21 +121,64 @@ export const Calculator = () => {
     }
   };
 
-  const onSubmitClicked = () => {
-    setActiveButton('=');
-    setTimeout(() => setActiveButton(null), 100);
+  // const onSubmitClicked = () => {
+  //   setActiveButton('=');
+  //   setTimeout(() => setActiveButton(null), 100);
 
-    if (calculation.modifier && calculation.value) {
-      // Maybe come back and add exception for divide by zero error
-      setCalculation({
-        ...calculation,
-        modifier: ModifierTypes.NONE,
-        value: NaN,
-        text: '0',
-        answer: helpers.performCalculation(calculation.answer, calculation.value, calculation.modifier),
-      });
-    }
-  };
+  //   if (calculation.modifier && calculation.value) {
+  //     // Maybe come back and add exception for divide by zero error
+  //     setCalculation({
+  //       ...calculation,
+  //       modifier: ModifierTypes.NONE,
+  //       value: NaN,
+  //       text: '0',
+  //       answer: helpers.performCalculation(calculation.answer, calculation.value, calculation.modifier),
+  //     });
+  //   }
+  // };
+
+  // Matt Added
+  const onSubmitClicked = () => {
+  setActiveButton('=');
+  setTimeout(() => setActiveButton(null), 100);
+
+  // Check if an operation has been selected
+  if (calculation.modifier && !isNaN(calculation.value)) {
+    const newAnswer = helpers.performCalculation(calculation.answer, calculation.value, calculation.modifier);
+    setCalculation({
+      ...calculation,
+      modifier: ModifierTypes.NONE,
+      value: NaN,
+      text: '0',
+      answer: newAnswer,
+    });
+    // Save the last operation and operand for repeated '=' presses
+    setLastOperation(calculation.modifier);
+    setLastOperand(calculation.value);
+  } else if (lastOperation && lastOperand !== null) {
+    // Repeat the last operation if '=' is pressed again without a new operation
+    const newAnswer = helpers.performCalculation(calculation.answer, lastOperand, lastOperation);
+    setCalculation({
+      ...calculation,
+      modifier: ModifierTypes.NONE,
+      value: NaN,
+      text: '0',
+      answer: newAnswer,
+    });
+  } else {
+    // If no modifier is set and '=' is pressed, just reaffirm the current answer/display
+    setCalculation({
+      ...calculation,
+      modifier: ModifierTypes.NONE,
+      value: calculation.answer, // Keep the current answer as the value
+      text: helpers.formatDisplay(calculation.answer), // Update text to formatted display
+      answer: calculation.answer,
+    });
+  }
+};
+
+
+  
 
   const onClearClicked = () => {
     // Clear MRC if clear was clicked multiple times.
