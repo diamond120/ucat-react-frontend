@@ -180,6 +180,8 @@ export const Calculator = () => {
   useHotkeys('backspace', onClearClicked, { preventDefault: true });
   useHotkeys('alt+c', onClearClicked, { preventDefault: true });
   useHotkeys('enter', onSubmitClicked, { preventDefault: true });
+  // Add support for numpad period
+  useHotkeys('numpad.', onNumberClicked('.'), { preventDefault: true });
 
   useEffect(() => {
     window.addEventListener('keydown', onSpecialKeyClicked);
