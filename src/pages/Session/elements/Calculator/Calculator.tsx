@@ -10,10 +10,6 @@ export const Calculator = () => {
   const [mrcValues, setMrcValues] = useState<MrcState>(new MrcState(0, 0));
   const [activeButton, setActiveButton] = useState<string | null>(null);
 
-  // Matt Added
-  const [lastOperation, setLastOperation] = useState<ModifierTypes | null>(null);
-  const [lastOperand, setLastOperand] = useState(null);
-
 
   const onNumberClicked = (numString: string) => () => {
     setActiveButton(numString);
@@ -121,98 +117,42 @@ export const Calculator = () => {
     }
   };
 
-  // const onSubmitClicked = () => {
-  //   setActiveButton('=');
-  //   setTimeout(() => setActiveButton(null), 100);
+  const onSubmitClicked = () => {
+    setActiveButton('=');
+    setTimeout(() => setActiveButton(null), 100);
 
-  //   if (calculation.modifier && calculation.value) {
-  //     // Maybe come back and add exception for divide by zero error
-  //     setCalculation({
-  //       ...calculation,
-  //       modifier: ModifierTypes.NONE,
-  //       value: NaN,
-  //       text: '0',
-  //       answer: helpers.performCalculation(calculation.answer, calculation.value, calculation.modifier),
-  //     });
-  //   }
-  // };
-
-  // Matt Added
-const onSubmitClicked = () => {
-  setActiveButton('=');
-  setTimeout(() => setActiveButton(null), 100);
-
-  if (calculation.modifier && !isNaN(calculation.value)) {
-    const newAnswer = helpers.performCalculation(calculation.answer, calculation.value, calculation.modifier);
-    setCalculation({
-      ...calculation,
-      modifier: ModifierTypes.NONE,
-      value: NaN,
-      text: '0',
-      answer: newAnswer,
-    });
-    setLastOperation(calculation.modifier); // This should now be acceptable
-    setLastOperand(calculation.value);
-  } else if (lastOperation && lastOperand !== null) {
-    const newAnswer = helpers.performCalculation(calculation.answer, lastOperand, lastOperation);
-    setCalculation({
-      ...calculation,
-      modifier: ModifierTypes.NONE,
-      value: NaN,
-      text: '0',
-      answer: newAnswer,
-    });
-  } else {
-    setCalculation({
-      ...calculation,
-      modifier: ModifierTypes.NONE,
-      value: calculation.answer,
-      text: helpers.formatDisplay(calculation.answer),
-      answer: calculation.answer,
-    });
-  }
-};
-
+    if (calculation.modifier && calculation.value) {
+      // Maybe come back and add exception for divide by zero error
+      setCalculation({
+        ...calculation,
+        modifier: ModifierTypes.NONE,
+        value: NaN,
+        text: '0',
+        answer: helpers.performCalculation(calculation.answer, calculation.value, calculation.modifier),
+      });
+    }
+  };
 
   
 
-  // const onClearClicked = () => {
-  //   // Clear MRC if clear was clicked multiple times.
-  //   if (calculation.value === 0 && calculation.answer === 0) {
-  //     setMrcValues({
-  //       mMinus: 0,
-  //       mPlus: 0,
-  //     });
-  //   }
-
-  //   setCalculation({
-  //     ...calculation,
-  //     modifier: ModifierTypes.NONE,
-  //     value: NaN,
-  //     text: '0',
-  //     answer: 0,
-  //   });
-  // };
-
-  // Matt Added
   const onClearClicked = () => {
-  if (calculation.value === 0 && calculation.answer === 0) {
-    setMrcValues({
-      mMinus: 0,
-      mPlus: 0,
-    });
-    setLastOperation(null);
-    setLastOperand(null);
-  }
+    // Clear MRC if clear was clicked multiple times.
+    if (calculation.value === 0 && calculation.answer === 0) {
+      setMrcValues({
+        mMinus: 0,
+        mPlus: 0,
+      });
+    }
 
-  setCalculation({
-    ...calculation,
-    modifier: ModifierTypes.NONE,
-    value: NaN,
-    text: '0',
-    answer: 0,
-  });
-};
+    setCalculation({
+      ...calculation,
+      modifier: ModifierTypes.NONE,
+      value: NaN,
+      text: '0',
+      answer: 0,
+    });
+  };
+
 
 
   const onSpecialKeyClicked = (event: KeyboardEvent) => {
