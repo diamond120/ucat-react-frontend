@@ -180,23 +180,44 @@ export const Calculator = () => {
 
   
 
-  const onClearClicked = () => {
-    // Clear MRC if clear was clicked multiple times.
-    if (calculation.value === 0 && calculation.answer === 0) {
-      setMrcValues({
-        mMinus: 0,
-        mPlus: 0,
-      });
-    }
+  // const onClearClicked = () => {
+  //   // Clear MRC if clear was clicked multiple times.
+  //   if (calculation.value === 0 && calculation.answer === 0) {
+  //     setMrcValues({
+  //       mMinus: 0,
+  //       mPlus: 0,
+  //     });
+  //   }
 
-    setCalculation({
-      ...calculation,
-      modifier: ModifierTypes.NONE,
-      value: NaN,
-      text: '0',
-      answer: 0,
+  //   setCalculation({
+  //     ...calculation,
+  //     modifier: ModifierTypes.NONE,
+  //     value: NaN,
+  //     text: '0',
+  //     answer: 0,
+  //   });
+  // };
+
+  // Matt Added
+  const onClearClicked = () => {
+  if (calculation.value === 0 && calculation.answer === 0) {
+    setMrcValues({
+      mMinus: 0,
+      mPlus: 0,
     });
-  };
+    setLastOperation(null);
+    setLastOperand(null);
+  }
+
+  setCalculation({
+    ...calculation,
+    modifier: ModifierTypes.NONE,
+    value: NaN,
+    text: '0',
+    answer: 0,
+  });
+};
+
 
   const onSpecialKeyClicked = (event: KeyboardEvent) => {
     switch (event.key) {
