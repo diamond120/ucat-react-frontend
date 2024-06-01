@@ -11,7 +11,7 @@ export const Calculator = () => {
   const [activeButton, setActiveButton] = useState<string | null>(null);
 
   // Matt Added
-  const [lastOperation, setLastOperation] = useState(null);
+  const [lastOperation, setLastOperation] = useState<ModifierTypes | null>(null);
   const [lastOperand, setLastOperand] = useState(null);
 
 
@@ -138,11 +138,10 @@ export const Calculator = () => {
   // };
 
   // Matt Added
-  const onSubmitClicked = () => {
+const onSubmitClicked = () => {
   setActiveButton('=');
   setTimeout(() => setActiveButton(null), 100);
 
-  // Check if an operation has been selected
   if (calculation.modifier && !isNaN(calculation.value)) {
     const newAnswer = helpers.performCalculation(calculation.answer, calculation.value, calculation.modifier);
     setCalculation({
@@ -152,11 +151,9 @@ export const Calculator = () => {
       text: '0',
       answer: newAnswer,
     });
-    // Save the last operation and operand for repeated '=' presses
-    setLastOperation(calculation.modifier);
+    setLastOperation(calculation.modifier); // This should now be acceptable
     setLastOperand(calculation.value);
   } else if (lastOperation && lastOperand !== null) {
-    // Repeat the last operation if '=' is pressed again without a new operation
     const newAnswer = helpers.performCalculation(calculation.answer, lastOperand, lastOperation);
     setCalculation({
       ...calculation,
@@ -166,12 +163,11 @@ export const Calculator = () => {
       answer: newAnswer,
     });
   } else {
-    // If no modifier is set and '=' is pressed, just reaffirm the current answer/display
     setCalculation({
       ...calculation,
       modifier: ModifierTypes.NONE,
-      value: calculation.answer, // Keep the current answer as the value
-      text: helpers.formatDisplay(calculation.answer), // Update text to formatted display
+      value: calculation.answer,
+      text: helpers.formatDisplay(calculation.answer),
       answer: calculation.answer,
     });
   }
