@@ -1,6 +1,7 @@
 import type { RadioOptionsProps } from './RadioOptions.types';
 
-import React, { useState, useMemo, useCallback, useEffect } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
+import { useHotkeys } from 'react-hotkeys-hook';
 import './_radio-options.scss';
 
 export const RadioOptions = ({ question, value: selectedValue, isSessionCompleted, onChange }: RadioOptionsProps) => {
@@ -10,17 +11,14 @@ export const RadioOptions = ({ question, value: selectedValue, isSessionComplete
     setCurrentValue(selectedValue);
   }, [question, selectedValue]);
 
-  const handleChange = useCallback(
-    (value: string) => () => {
-      if (!isSessionCompleted) {
-        const formattedValue = JSON.stringify(value);
-        const checkedValue = formattedValue === currentValue ? null : formattedValue;
-        setCurrentValue(checkedValue);
-        onChange(checkedValue);
-      }
-    },
-    [isSessionCompleted, currentValue, onChange],
-  );
+  const handleChange = (value: string) => () => {
+    if (!isSessionCompleted) {
+      const formattedValue = JSON.stringify(value);
+      const checkedValue = formattedValue === currentValue ? null : formattedValue;
+      setCurrentValue(checkedValue);
+      onChange(checkedValue);
+    }
+  };
 
   const radioOptions = useMemo(() => {
     try {
@@ -37,6 +35,17 @@ export const RadioOptions = ({ question, value: selectedValue, isSessionComplete
     }
   }, [question.options, question.option_image_urls]);
 
+  useHotkeys(
+    radioOptions.map((option) => option.value).join(','),
+    (_, handler) => {
+      const key = handler.keys?.[0].toUpperCase();
+      if (key) {
+        handleChange(key)();
+      }
+    },
+    { preventDefault: true, enableOnFormTags: true },
+  );
+
   return (
     <div className="radio_options__container" role="radiogroup" aria-labelledby="questionLabel">
       {radioOptions.map(({ label, value, image }, index) => (
@@ -49,6 +58,7 @@ export const RadioOptions = ({ question, value: selectedValue, isSessionComplete
               checked={currentValue !== null && value === JSON.parse(currentValue)}
               onClick={handleChange(value)}
               aria-labelledby={`optionLabel${index}`}
+              readOnly
             />
             {value}.{' '}
             <span className="radio_options__item--label" aria-hidden="true">
