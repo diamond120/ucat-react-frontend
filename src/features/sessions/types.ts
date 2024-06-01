@@ -39,7 +39,7 @@ export type QuestionResponse = {
   session_id: string;
   question_id: Question['id'];
   question: Question;
-  value: string;
+  value: string | null;
   flagged: 0 | 1;
 };
 

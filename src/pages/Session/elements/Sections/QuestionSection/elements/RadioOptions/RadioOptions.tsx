@@ -4,7 +4,7 @@ import React, { useState, useMemo, useCallback, useEffect } from 'react';
 import './_radio-options.scss';
 
 export const RadioOptions = ({ question, value: selectedValue, isSessionCompleted, onChange }: RadioOptionsProps) => {
-  const [currentValue, setCurrentValue] = useState<string>(selectedValue);
+  const [currentValue, setCurrentValue] = useState<string | null>(selectedValue);
 
   useEffect(() => {
     setCurrentValue(selectedValue);
@@ -14,11 +14,12 @@ export const RadioOptions = ({ question, value: selectedValue, isSessionComplete
     (value: string) => () => {
       if (!isSessionCompleted) {
         const formattedValue = JSON.stringify(value);
-        setCurrentValue(formattedValue);
-        onChange(formattedValue);
+        const checkedValue = formattedValue === currentValue ? null : formattedValue;
+        setCurrentValue(checkedValue);
+        onChange(checkedValue);
       }
     },
-    [isSessionCompleted, setCurrentValue, onChange],
+    [isSessionCompleted, currentValue, onChange],
   );
 
   const radioOptions = useMemo(() => {
@@ -45,8 +46,8 @@ export const RadioOptions = ({ question, value: selectedValue, isSessionComplete
               type="radio"
               name="options"
               value={value}
-              checked={value === JSON.parse(currentValue)}
-              onChange={handleChange(value)}
+              checked={currentValue !== null && value === JSON.parse(currentValue)}
+              onClick={handleChange(value)}
               aria-labelledby={`optionLabel${index}`}
             />
             {value}.{' '}
@@ -59,7 +60,7 @@ export const RadioOptions = ({ question, value: selectedValue, isSessionComplete
                 {JSON.parse(question.answer) === value && (
                   <span className="radio_options__item-feedback--correct">Correct answer</span>
                 )}
-                {JSON.parse(selectedValue) === value && (
+                {selectedValue !== null && JSON.parse(selectedValue) === value && (
                   <span className="radio_options__item-feedback--yours">Your answer</span>
                 )}
               </div>

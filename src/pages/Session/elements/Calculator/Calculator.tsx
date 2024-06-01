@@ -10,7 +10,6 @@ export const Calculator = () => {
   const [mrcValues, setMrcValues] = useState<MrcState>(new MrcState(0, 0));
   const [activeButton, setActiveButton] = useState<string | null>(null);
 
-
   const onNumberClicked = (numString: string) => () => {
     setActiveButton(numString);
 
@@ -133,8 +132,6 @@ export const Calculator = () => {
     }
   };
 
-  
-
   const onClearClicked = () => {
     // Clear MRC if clear was clicked multiple times.
     if (calculation.value === 0 && calculation.answer === 0) {
@@ -152,8 +149,6 @@ export const Calculator = () => {
       answer: 0,
     });
   };
-
-
 
   const onSpecialKeyClicked = (event: KeyboardEvent) => {
     switch (event.key) {

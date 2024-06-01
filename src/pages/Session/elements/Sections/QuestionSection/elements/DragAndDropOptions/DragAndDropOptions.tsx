@@ -13,7 +13,7 @@ export const DragAndDropOptions = ({
   isSessionCompleted,
   onChange,
 }: DragAndDropOptionsProps) => {
-  const [currentValue, setCurrentValue] = useState<string>(selectedValue);
+  const [currentValue, setCurrentValue] = useState<string | null>(selectedValue);
 
   useEffect(() => {
     setCurrentValue(selectedValue);
