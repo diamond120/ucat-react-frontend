@@ -10,13 +10,6 @@ export const formatDisplayText = (inValue: string) => {
 
 export const formatDisplay = (inValue: number) => {
   return inValue;
-
-  const inValueString: string = inValue.toString();
-  if (inValueString.length > 10) {
-    return Number(inValueString.substring(0, 10));
-  }
-
-  return inValue;
 };
 
 export const formatDot = (inValue: string | number) => {
@@ -36,37 +29,36 @@ export const performCalculation = (value1: number, value2: number, modifier: Mod
     case ModifierTypes.minus:
       return value1 - value2;
     default:
-      console.error('Modifier (' + modifier + ') not found.');
-      return 0;
+      return value1;
   }
 };
 
-export const getAnswerAfterModifier = (inCalculation: CalculationState, inModifier: ModifierTypes) => {
+export const getAnswerAfterModifier = (inCalculation: CalculationState) => {
   if (!inCalculation.value) {
     return inCalculation.answer;
   } else if (!inCalculation.answer) {
     return inCalculation.value;
   } else {
-    return performCalculation(inCalculation.answer, inCalculation.value, inModifier);
+    return performCalculation(inCalculation.answer, inCalculation.value, inCalculation.modifier);
   }
 };
 
 export const getAnswerAfterSpecialModifier = (inCalculation: CalculationState, inModifier: ModifierTypes) => {
   switch (inModifier) {
     case ModifierTypes.plusminus:
-      if (inCalculation.value) {
-        return inCalculation.value * -1;
-      } else {
+      if (inCalculation.displayAnswer) {
         return inCalculation.answer * -1;
+      } else {
+        return inCalculation.value * -1;
       }
     case ModifierTypes.sqrt:
-      if (inCalculation.value) {
-        return Math.sqrt(inCalculation.value);
-      } else {
+      if (inCalculation.displayAnswer) {
         return Math.sqrt(inCalculation.answer);
+      } else {
+        return Math.sqrt(inCalculation.value);
       }
     case ModifierTypes.percent:
-      if (inCalculation.value) {
+      if (inCalculation.displayAnswer) {
         const percentage = inCalculation.answer * (inCalculation.value * 0.01);
         return performCalculation(inCalculation.answer, percentage, inCalculation.modifier);
       } else {
@@ -79,7 +71,6 @@ export const getAnswerAfterSpecialModifier = (inCalculation: CalculationState, i
 };
 
 export const getDisplayableAnswer = (displayNumber: number) => {
-  console.log(displayNumber);
   const displayNumberString: string = displayNumber.toString();
   if (displayNumberString.length > 8) {
     const dot = displayNumberString.indexOf('.');

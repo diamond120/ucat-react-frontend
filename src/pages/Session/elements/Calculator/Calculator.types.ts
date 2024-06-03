@@ -12,6 +12,7 @@ export enum ModifierTypes {
 export class CalculationState {
   public modifier: ModifierTypes;
   public value: number;
+  public displayAnswer: boolean;
   public text: string;
   public answer: number;
 
@@ -20,6 +21,7 @@ export class CalculationState {
     this.value = value;
     this.text = text;
     this.answer = answer;
+    this.displayAnswer = false;
   }
 }
 

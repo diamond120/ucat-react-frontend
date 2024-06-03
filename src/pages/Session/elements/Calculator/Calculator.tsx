@@ -14,7 +14,7 @@ export const Calculator = () => {
     setActiveButton(numString);
 
     setTimeout(() => setActiveButton(null), 100);
-
+ 
     if (numString === '.' && calculation.text.includes('.')) {
       return;
     }
@@ -22,13 +22,15 @@ export const Calculator = () => {
     let text = helpers.formatDisplayText(calculation.text === '0' ? numString ?? '' : calculation.text + numString);
     if (text === '.') text = '0.';
     const value = helpers.formatDisplay(eval(text));
+    const modifier = calculation.text === '0' && calculation.value ? ModifierTypes.NONE : calculation.modifier;
 
     setCalculation({
       ...calculation,
-      modifier: calculation.modifier,
+      modifier,
+      displayAnswer: false,
       text,
       value,
-      answer: Number(!calculation.modifier ? 0 : helpers.formatDisplay(calculation.answer)),
+      answer: Number(modifier == ModifierTypes.NONE ? 0 : helpers.formatDisplay(calculation.answer)),
     });
   };
 
@@ -36,11 +38,13 @@ export const Calculator = () => {
     setActiveButton(inModifier);
     setTimeout(() => setActiveButton(null), 100);
 
-    const newAnswer: number = helpers.formatDisplay(helpers.getAnswerAfterModifier(calculation, inModifier));
+    const newAnswer: number = calculation.displayAnswer ? calculation.answer : helpers.formatDisplay(helpers.getAnswerAfterModifier(calculation));
+
     setCalculation({
       ...calculation,
       modifier: inModifier,
-      value: NaN,
+      displayAnswer: true,
+      value: 0,
       text: '0',
       answer: newAnswer,
     });
@@ -52,9 +56,9 @@ export const Calculator = () => {
     setCalculation({
       ...calculation,
       modifier: calculation.modifier,
-      value: NaN,
+      value: calculation.displayAnswer ? calculation.value : helpers.formatDisplay(newAnswer),
       text: '0',
-      answer: helpers.formatDisplay(newAnswer),
+      answer: calculation.displayAnswer ? helpers.formatDisplay(newAnswer) : calculation.answer,
     });
   };
 
@@ -124,8 +128,7 @@ export const Calculator = () => {
       // Maybe come back and add exception for divide by zero error
       setCalculation({
         ...calculation,
-        modifier: ModifierTypes.NONE,
-        value: NaN,
+        displayAnswer: true,
         text: '0',
         answer: helpers.performCalculation(calculation.answer, calculation.value, calculation.modifier),
       });
@@ -144,7 +147,8 @@ export const Calculator = () => {
     setCalculation({
       ...calculation,
       modifier: ModifierTypes.NONE,
-      value: NaN,
+      displayAnswer: false,
+      value: 0,
       text: '0',
       answer: 0,
     });
@@ -197,7 +201,7 @@ export const Calculator = () => {
         <h4 className="calculator__display-text--mrc">{mrcValues.mMinus > 0 || mrcValues.mPlus > 0 ? 'M' : ''}</h4>
         <h3 className="calculator__display-text">
           {helpers.formatDot(
-            isNaN(calculation.value) ? helpers.getDisplayableAnswer(calculation.answer) : calculation.value,
+            calculation.displayAnswer ? helpers.getDisplayableAnswer(calculation.answer) : helpers.getDisplayableAnswer(calculation.value),
           )}
         </h3>
       </div>
