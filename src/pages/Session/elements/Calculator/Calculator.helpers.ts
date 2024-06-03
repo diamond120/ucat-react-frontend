@@ -9,6 +9,8 @@ export const formatDisplayText = (inValue: string) => {
 };
 
 export const formatDisplay = (inValue: number) => {
+  return inValue;
+
   const inValueString: string = inValue.toString();
   if (inValueString.length > 10) {
     return Number(inValueString.substring(0, 10));
@@ -77,10 +79,13 @@ export const getAnswerAfterSpecialModifier = (inCalculation: CalculationState, i
 };
 
 export const getDisplayableAnswer = (displayNumber: number) => {
+  console.log(displayNumber);
   const displayNumberString: string = displayNumber.toString();
-  if (displayNumberString.length > 10) {
+  if (displayNumberString.length > 8) {
+    const dot = displayNumberString.indexOf('.');
+    if(dot > 0 && dot < 6 && !displayNumberString.includes('e+')) return displayNumber.toFixed(8 - dot);
     // Only display 6 decimal places.
-    return displayNumber.toExponential(6);
+    return displayNumber.toExponential(5);
   }
 
   return displayNumber;
