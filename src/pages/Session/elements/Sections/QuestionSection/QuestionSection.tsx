@@ -69,7 +69,7 @@ export const QuestionSection = ({ sessionId, questionId, isSessionCompleted }: Q
             dangerouslySetInnerHTML={{ __html: currentQuestionResponse.question.text ?? '' }}
           />
           {currentQuestionResponse.question.image_url && (
-            <img className="question-section__situation--img" src={currentQuestionResponse.question.image_url} />
+            <img className="question-section__question--img" src={currentQuestionResponse.question.image_url} />
           )}
 
           {currentQuestionResponse.question.type === 'MC' && (

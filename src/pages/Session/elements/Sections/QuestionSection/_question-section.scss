@@ -20,10 +20,10 @@
             .question-section__situation {
                 flex: 60%;
                 border-right: 7px solid #006DAA;
-            }
 
-            .question-section__question {
-                flex: 40%;
+                &--img {
+                    max-width: 560px;
+                }
             }
 
             /* smaller than 600px aka mobile */
@@ -38,6 +38,10 @@
 
                 .question-section__question {
                     flex: 0;
+
+                    &--img {
+                        max-width: 172px;
+                    }
                 }
     
             }

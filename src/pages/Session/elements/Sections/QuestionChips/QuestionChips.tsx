@@ -25,7 +25,7 @@ export const QuestionChips = ({ onQuestionChange }: QuestionChipsProps) => {
 
   return (
     <div className="question-chips__container">
-      <h5>Abstract Reasoning</h5>
+      <h5>{currentSection.name}</h5>
       <div className="question-chips__content">
         {currentSection.questions.map((question) => (
           <button
